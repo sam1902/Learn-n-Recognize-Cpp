@@ -16,20 +16,30 @@
 using std::string;
 using std::cout;
 using std::endl;
-#endif /* Message_hpp */
 
+// ### General ###
 string colorText(string inputText, int colorCode);
-void VersionMessage(string opencv_version);
-void CreditsMessage();
-void ErrorLoadingHaarMessage();
-void MissingArgsMessage();
-void EmptyFrameMessage();
+void ClearMessage();
 void ExitMessage();
+void CreditsMessage();
+void MissingArgsMessage();
+
+// ### OpenCV ###
+void VersionMessage(string opencv_version);
+void ErrorLoadingHaarMessage();
+void SuccessLoadingHaarMessage();
+void EmptyFrameMessage();
+
+// ### File Loader ###
 void InvalidDirectoryMessage(string path);
 void FileFoundMessage(string filename, string path);
 void FileNotFoundMessage(string filename, string path);
+
+// ### Database ###
 void ErrorAccessDBMessage(string error);
 void ErrorCreateDBMessage(string error);
 void SuccessAccessDBMessage();
 void SuccessCreateDBMessage();
 void ErrorExecuteQueryDBMessage(string query, string error);
+
+#endif /* Message_hpp */

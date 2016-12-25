@@ -12,12 +12,17 @@ string colorText(string inputText, int colorCode){
     return "\033[1;3" + std::to_string(colorCode) + "m" + inputText + "\033[0m";
 }
 
-void ExitMessage(){
-    cout << colorText("\n\n[+] ", 1) << "Extinction imminante du programme" << endl;
+// ### General ###
+
+void ClearMessage(){
+    // ############ ANSI ############
+    // \033[2J      : escape char from top to bot
+    // \033[1;1H    : set cursor at pos 1,1
+    cout << "\033[2J" << "\033[1;1H";
 }
 
-void EmptyFrameMessage(){
-    cout << colorText("[+] ", 1) << "Aucune image capturé ! Break" << endl;
+void ExitMessage(){
+    cout << "Extinction imminante du programme" << endl;
 }
 
 void MissingArgsMessage(){
@@ -32,15 +37,28 @@ void MissingArgsMessage(){
     << endl;
 }
 
-void ErrorLoadingHaarMessage(){
-    cout << colorText("[+] ", 1) << "Erreur lors du chargement de la Face Cascade." << endl;
-}
-void CreditsMessage(){
-    cout << colorText("\t==> ", 1) << colorText("Learn'n'Recognize par Samuel Prevost dans le cadre du TPE", 7) << colorText(" <==\t", 1) << endl;
-}
+// ### OpenCV ###
 void VersionMessage(string opencv_version){
     cout << colorText("[+]", 2) << " OpenCV Version " << opencv_version << " chargé avec succes !"<< endl;
 }
+
+void EmptyFrameMessage(){
+    cout << colorText("[+] ", 1) << "Aucune image capturé ! Break" << endl;
+}
+
+void ErrorLoadingHaarMessage(){
+    cout << colorText("[+] ", 1) << "Erreur lors du chargement de la Face Cascade." << endl;
+}
+
+void SuccessLoadingHaarMessage(){
+    cout << colorText("[+] ", 2) << " Chargement de la Face Cascade réussi ! " << endl;
+}
+
+void CreditsMessage(){
+    cout << colorText("\t==> ", 1) << colorText("Learn'n'Recognize par Samuel Prevost dans le cadre du TPE", 7) << colorText(" <==\t", 1) << endl;
+}
+
+// ### File Loader ###
 
 void InvalidDirectoryMessage(string path){
     cout << colorText("[+] ", 1) << "Erreur l'ouverture de " << path << endl;
@@ -53,6 +71,8 @@ void FileFoundMessage(string filename, string path){
 void FileNotFoundMessage(string filename, string path){
     cout << colorText("[+] ", 1) << filename << " n'a pas été trouvé dans " << path << endl;
 }
+
+// #### Database ####
 
 void ErrorAccessDBMessage(string error){
     cout << colorText("[+] ", 1) << " Impossible d'accèder à la base de données: " << error << endl;

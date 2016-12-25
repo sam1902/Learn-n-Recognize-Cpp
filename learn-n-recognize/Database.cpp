@@ -13,14 +13,16 @@
 Database::Database(string pathToDB){
     if(!this->open(pathToDB))
         ErrorAccessDBMessage(sqlite3_errmsg(db));
-    SuccessAccessDBMessage();
+    else
+        SuccessAccessDBMessage();
 }
 
 // Initialize a new one
 Database::Database(){
     if(!this->create(DEFAULT_DB_PATH, this->db))
         ErrorCreateDBMessage(sqlite3_errmsg(db));
-    SuccessCreateDBMessage();
+    else
+        SuccessCreateDBMessage();
     
 }
 

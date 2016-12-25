@@ -1,15 +1,15 @@
 //
-//  InputArgs.cpp
+//  ArgumentManager.cpp
 //  learn-n-recognize
 //
 //  Created by Samuel Prevost on 24/12/2016.
 //  Copyright © 2016 Samuel Prevost. All rights reserved.
 //
 
-#include "InputArgs.hpp"
+#include "ArgumentManager.hpp"
 
 
-InputArgs::InputArgs(int argc, const char * argv[]){
+ArgumentManager::ArgumentManager(int argc, const char * argv[]){
     if(argc < 5){
         MissingArgsMessage();
         if(!this->AskForArgs(argc, &argv))
@@ -23,9 +23,8 @@ InputArgs::InputArgs(int argc, const char * argv[]){
     video_scaling_factor    =   stof(argv[5]);
 }
 
-bool InputArgs::AskForArgs(int argc, const char** argv[]){
+bool ArgumentManager::AskForArgs(int argc, const char** argv[]){
     vector<string> newArgvStr(6);
-    string buffer;
     newArgvStr[0] = *argv[0];
     cout << "Veuillez entrer les arguments:" << endl;
     cout << "\tChemin vers la base de donnée ?" << endl;
@@ -40,11 +39,9 @@ bool InputArgs::AskForArgs(int argc, const char** argv[]){
     cin >> newArgvStr[5];
     
     // vector<string> to char** []
-    const char** newArgvChar[newArgvStr.size()];
     for (int i = 0; i < newArgvStr.size(); i++) {
-        *newArgvChar[i] = newArgvStr[i].c_str();
+        *argv[i] = newArgvStr[i].c_str();
     }
-    argv = newArgvChar;
     return true;
 }
 

@@ -1,13 +1,13 @@
 //
-//  InputArgs.hpp
+//  ArgumentManager.hpp
 //  learn-n-recognize
 //
 //  Created by Samuel Prevost on 24/12/2016.
 //  Copyright © 2016 Samuel Prevost. All rights reserved.
 //
 
-#ifndef InputArgs_hpp
-#define InputArgs_hpp
+#ifndef ArgumentManager_hpp
+#define ArgumentManager_hpp
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,9 +16,8 @@
 #include "Message.hpp"
 
 using namespace std;
-#endif /* InputArgs_hpp */
 
-class InputArgs {
+class ArgumentManager {
     
 public:
     // Path to where the database will be loaded from and saved in
@@ -36,7 +35,9 @@ public:
     // Scaling factor of the displayed live video stream
     float video_scaling_factor;
     
-    InputArgs(int argc, const char * argv[]);
+    ArgumentManager(int argc, const char * argv[]);
     
     bool AskForArgs(int argc, const char** argv[]);
 };
+
+#endif /* ArgumentManager_hpp */
