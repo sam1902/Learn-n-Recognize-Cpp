@@ -28,3 +28,8 @@ void ExitMessage();
 void InvalidDirectoryMessage(string path);
 void FileFoundMessage(string filename, string path);
 void FileNotFoundMessage(string filename, string path);
+void ErrorAccessDBMessage(string error);
+void ErrorCreateDBMessage(string error);
+void SuccessAccessDBMessage();
+void SuccessCreateDBMessage();
+void ErrorExecuteQueryDBMessage(string query, string error);

@@ -29,9 +29,7 @@ void MissingArgsMessage(){
     << "\t• Seuil de validité\t\t\t(0-100)"                     << endl
     << "\t• Identifiant de la caméra\t\t(Ex: 0)"                << endl
     << "\t• Coef d'agrandissement video\t\t(Ex: 1)"             << endl
-    << endl
-    << "\t• Nom du sujet à apprendre\t\t(Ex: Samuel\\ Prevost)" << endl
-    << "\t• Identifiant du sujet à apprendre\t(Ex: 1)"          << endl;
+    << endl;
 }
 
 void ErrorLoadingHaarMessage(){
@@ -54,4 +52,24 @@ void FileFoundMessage(string filename, string path){
 
 void FileNotFoundMessage(string filename, string path){
     cout << colorText("[+] ", 1) << filename << " n'a pas été trouvé dans " << path << endl;
+}
+
+void ErrorAccessDBMessage(string error){
+    cout << colorText("[+] ", 1) << " Impossible d'accèder à la base de données: " << error << endl;
+}
+
+void ErrorCreateDBMessage(string error){
+    cout << colorText("[+] ", 1) << " Impossible de créer la base de données: " << error << endl;
+}
+
+void SuccessAccessDBMessage(){
+    cout << colorText("[+] ", 2) << " Accès à la base de données réussi ! " << endl;
+}
+
+void SuccessCreateDBMessage(){
+    cout << colorText("[+] ", 2) << " Création de la base de données réussi ! " << endl;
+}
+
+void ErrorExecuteQueryDBMessage(string query, string error){
+    cout << colorText("[+] ", 1) << " Impossible d'exécuter la requète \"" << query << "\" : " << error << endl;
 }
