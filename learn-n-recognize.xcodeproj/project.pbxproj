@@ -11,6 +11,7 @@
 		7D4C2B321E0BE31B0026000F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D4C2B301E0BE31B0026000F /* Database.cpp */; };
 		7D5E41C31DD6608A00D8805A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E41C21DD6608A00D8805A /* main.cpp */; };
 		7D70EF541E10436E00842923 /* HaarCascade.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D70EF521E10436E00842923 /* HaarCascade.cpp */; };
+		7D70EF571E1064EC00842923 /* LBPRecognizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D70EF551E1064EC00842923 /* LBPRecognizer.cpp */; };
 		7DF0A7561E0EB70C0017AC57 /* ArgumentManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DF0A7541E0EB70C0017AC57 /* ArgumentManager.cpp */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,8 @@
 		7D5E41C21DD6608A00D8805A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		7D70EF521E10436E00842923 /* HaarCascade.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HaarCascade.cpp; sourceTree = "<group>"; };
 		7D70EF531E10436E00842923 /* HaarCascade.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HaarCascade.hpp; sourceTree = "<group>"; };
+		7D70EF551E1064EC00842923 /* LBPRecognizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LBPRecognizer.cpp; sourceTree = "<group>"; };
+		7D70EF561E1064EC00842923 /* LBPRecognizer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LBPRecognizer.hpp; sourceTree = "<group>"; };
 		7DF0A7521E0EB4930017AC57 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		7DF0A7541E0EB70C0017AC57 /* ArgumentManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArgumentManager.cpp; sourceTree = "<group>"; };
 		7DF0A7551E0EB70C0017AC57 /* ArgumentManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArgumentManager.hpp; sourceTree = "<group>"; };
@@ -80,6 +83,8 @@
 				7DF0A7551E0EB70C0017AC57 /* ArgumentManager.hpp */,
 				7D70EF521E10436E00842923 /* HaarCascade.cpp */,
 				7D70EF531E10436E00842923 /* HaarCascade.hpp */,
+				7D70EF551E1064EC00842923 /* LBPRecognizer.cpp */,
+				7D70EF561E1064EC00842923 /* LBPRecognizer.hpp */,
 			);
 			path = "learn-n-recognize";
 			sourceTree = "<group>";
@@ -152,6 +157,7 @@
 				7D5E41C31DD6608A00D8805A /* main.cpp in Sources */,
 				7D4C2B321E0BE31B0026000F /* Database.cpp in Sources */,
 				7D4C2B2D1E0BB3BB0026000F /* Message.cpp in Sources */,
+				7D70EF571E1064EC00842923 /* LBPRecognizer.cpp in Sources */,
 				7DF0A7561E0EB70C0017AC57 /* ArgumentManager.cpp in Sources */,
 				7D70EF541E10436E00842923 /* HaarCascade.cpp in Sources */,
 			);

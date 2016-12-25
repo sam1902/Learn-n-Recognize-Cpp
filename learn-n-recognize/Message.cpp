@@ -21,6 +21,10 @@ void ClearMessage(){
     cout << "\033[2J" << "\033[1;1H";
 }
 
+void CreditsMessage(){
+    cout << colorText("\t==> ", 1) << colorText("Learn'n'Recognize par Samuel Prevost dans le cadre du TPE", 7) << colorText(" <==\t", 1) << endl;
+}
+
 void ExitMessage(){
     cout << "Extinction imminante du programme" << endl;
 }
@@ -54,8 +58,16 @@ void SuccessLoadingHaarMessage(){
     cout << colorText("[+] ", 2) << " Chargement de la Face Cascade réussi ! " << endl;
 }
 
-void CreditsMessage(){
-    cout << colorText("\t==> ", 1) << colorText("Learn'n'Recognize par Samuel Prevost dans le cadre du TPE", 7) << colorText(" <==\t", 1) << endl;
+void ErrorLoadingLBPRMessage(){
+    cout << colorText("[+] ", 1) << "Erreur lors du chargement de LBPR." << endl;
+}
+
+void SuccessLoadingLBPRMessage(){
+    cout << colorText("[+] ", 2) << " Chargement de LBPR réussi ! " << endl;
+}
+
+void ErrorOpeningCameraMessage(){
+    cout << colorText("[+] ", 1) << "Erreur lors de l'ouverture du flux vidéo." << endl;
 }
 
 // ### File Loader ###

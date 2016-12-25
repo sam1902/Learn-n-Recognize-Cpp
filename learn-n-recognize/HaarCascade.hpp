@@ -22,13 +22,10 @@ class HaarCascade{
 private:
     CascadeClassifier face_cascade;
 public:
-    Mat workingFrame;
-    
     HaarCascade(string path);
 
-    vector<Rect> detectFaces();
-    Mat drawRect(vector<Rect> faces);
-    void SetNewFrame(Mat workingFrame);
+    vector<Rect> detectFaces(Mat* frame);
+    void drawRect(Mat* frame, vector<Rect> faces);
     bool LoadHaarCatalogue(string path);
 };
 

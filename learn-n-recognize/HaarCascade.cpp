@@ -19,11 +19,11 @@ bool HaarCascade::LoadHaarCatalogue(string path){
     return this->face_cascade.load(path);
 }
 
-vector<Rect> HaarCascade::detectFaces(){
+vector<Rect> HaarCascade::detectFaces(Mat* frame){
     vector<Rect> faces;
     Mat frame_gray;
     
-    cvtColor( this->workingFrame, frame_gray, CV_BGR2GRAY );
+    cvtColor(*frame, frame_gray, CV_BGR2GRAY );
     // Normalize bins to 255
     equalizeHist( frame_gray, frame_gray );
     
@@ -32,11 +32,10 @@ vector<Rect> HaarCascade::detectFaces(){
     return faces;
 }
 
-Mat HaarCascade::drawRect(vector<Rect> faces){
-    Mat frame = this->workingFrame;
+void HaarCascade::drawRect(Mat* frame, vector<Rect> faces){
     for( size_t i = 0; i < faces.size(); i++ )
     {
-        rectangle(frame, Point(faces.at(i).x, faces[i].y), Point(faces[i].x + faces[i].width, faces[i].y + faces[i].height), Scalar( 0, 255, 0 ));
+        rectangle(*frame, Point(faces.at(i).x, faces[i].y), Point(faces[i].x + faces[i].width, faces[i].y + faces[i].height), Scalar( 0, 255, 0 ));
     }
-    return frame;
+    return;
 }

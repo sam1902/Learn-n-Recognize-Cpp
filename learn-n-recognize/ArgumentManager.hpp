@@ -20,9 +20,10 @@ using namespace std;
 class ArgumentManager {
     
 public:
-    // Path to where the database will be loaded from and saved in
-    // Must be a folder with images or an xml file named "recognized.xml" in it.
+    // Path to where the SQLite database containing name and id is
     string database_path;
+    // Path to where the LBP recognizer archive is
+    string recognizer_path;
     // Path to haar cascade XML file
     string face_cascade_path;
     

@@ -28,7 +28,10 @@ void MissingArgsMessage();
 void VersionMessage(string opencv_version);
 void ErrorLoadingHaarMessage();
 void SuccessLoadingHaarMessage();
+void ErrorLoadingLBPRMessage();
+void SuccessLoadingLBPRMessage();
 void EmptyFrameMessage();
+void ErrorOpeningCameraMessage();
 
 // ### File Loader ###
 void InvalidDirectoryMessage(string path);
