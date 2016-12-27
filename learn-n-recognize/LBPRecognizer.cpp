@@ -18,7 +18,7 @@ LBPRecognizer::LBPRecognizer(string path){
 
 LBPRecognizer::LBPRecognizer(){
     this->model = createLBPHFaceRecognizer();
-    InitEmptyLBPRMessage();
+    WarningInitEmptyLBPRMessage();
 }
 
 bool LBPRecognizer::load(string path){
@@ -37,35 +37,66 @@ void LBPRecognizer::save(string path){
 }
 
 void LBPRecognizer::train(vector<Mat> src, vector<int> labels){
-    this->model->train(src, labels);
+    this->model->train(this->toGrey(src), labels);
     this->isFaceRecognizerEmpty = false;
+    this->hasBeenEdited         = true;
 }
 
 void LBPRecognizer::update(vector<Mat> src, vector<int> labels){
-    if(!this->isEmpty())
-        this->model->update(src, labels);
+    if(!this->isEmpty()){
+        this->model->update(this->toGrey(src), labels);
+        this->hasBeenEdited = true;
+    }else{
+        ErrorUpdateNotInitializedLBPR();
+        this->train(src, labels);
+    }
 }
-
 void LBPRecognizer::recognize(Mat frame, int* id, double* confidence){
-    this->model->predict(frame, *id, *confidence);
+    double raw_conf;
+    this->model->predict(this->toGrey(frame), *id, raw_conf);
+    if((100 - raw_conf) < 0){
+        *confidence = 0;
+    }else{
+        *confidence = 100 - raw_conf;
+    }
 }
 
-// Should be possible, however it'd be too long to make sure the used id
-// (or so called "label") doesn't aleady exist so I'll use SQLite with
-// unique, auto increment id and so the id (a.k.a. label) will be unique
-//inline string LBPRecognizer::getName(int id){
-//    return this->model->getLabelInfo(id);
-//}
-//
-//inline int LBPRecognizer::getID(string name){
-//    return this->model->getLabelsByString(name)[0];
-//}
+/* The following methods should be possible,
+ however it'd be too long to make sure the used id
+ (or so called "label") doesn't aleady exist so I'll use SQLite with
+ unique, auto increment id and so the id (a.k.a. label) will be unique
+
+inline string LBPRecognizer::getName(int id){
+    return this->model->getLabelInfo(id);
+}
+
+inline int LBPRecognizer::getID(string name){
+    return this->model->getLabelsByString(name)[0];
+}
+*/
 
 void LBPRecognizer::drawNameAndConf(Mat* frame, Rect face, string name, string conf){
-    putText(*frame, name + "(" + conf + " %)", Point(face.x, face.y), FONT_HERSHEY_SIMPLEX, 8, Scalar(0,255,0));
+    putText(*frame, name + "(" + conf + " %)", Point(face.x, face.y), FONT_HERSHEY_COMPLEX, FONT_SIZE, Scalar(0,255,0));
     return;
 }
 
 inline bool LBPRecognizer::isEmpty(){
     return this->isFaceRecognizerEmpty;
 }
+
+Mat LBPRecognizer::toGrey(Mat src){
+    Mat output;
+    cvtColor(src, output, COLOR_BGR2GRAY);
+    return output;
+}
+
+vector<Mat> LBPRecognizer::toGrey(vector<Mat> src){
+    vector<Mat> output;
+    for (int i = 0; i < src.size(); i++) {
+        Mat out;
+        cvtColor(src[i], out, COLOR_BGR2GRAY);
+        output.push_back(out);
+    }
+    return output;
+}
+

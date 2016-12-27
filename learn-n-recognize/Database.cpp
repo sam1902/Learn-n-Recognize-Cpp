@@ -6,8 +6,9 @@
 //  Copyright © 2016 Samuel Prevost. All rights reserved.
 //
 
-#include "Database.hpp"
 #include <iostream>
+// Forward declaration
+#include "Database.hpp"
 
 // Open already existing one
 Database::Database(string pathToDB){
@@ -20,7 +21,7 @@ Database::Database(string pathToDB){
 // Initialize a new one
 Database::Database(){
     if(!this->create(DEFAULT_DB_PATH, this->db))
-        ErrorCreateDBMessage(sqlite3_errmsg(db));
+        ErrorCreateDBMessage(sqlite3_errmsg(this->db));
     else
         SuccessCreateDBMessage();
     
@@ -60,6 +61,7 @@ int Database::insertSubject(string subjectName){
     /* Execute SQL statement */
     int rc = sqlite3_exec(this->db, sql.c_str(), NULL, 0, &zErrMsg);
     if( rc != SQLITE_OK ){
+        ErrorInsertSubjectDBMessage(sqlite3_errmsg(this->db));
         sqlite3_free(zErrMsg);
         return NULL;
     }else{
@@ -106,7 +108,7 @@ vector<vector<string>> Database::query(string query){
     if(error != "not an error"){
         ErrorExecuteQueryDBMessage(query, error);
         vector<string> values;
-        values.push_back(to_string(SQLITE_ERROR));
+        values.push_back("-1");
         results.push_back(values);
     }
     
@@ -114,21 +116,21 @@ vector<vector<string>> Database::query(string query){
 }
 
 string Database::getSubjectName(int subjectID){
-    string name = (this->query("SELECT name FROM subjects WHERE id=" + to_string(subjectID) + ";")[0])[0];
-    return name == to_string(SQLITE_ERROR) ? "" : name;
+    vector<vector<string>> result = this->query("SELECT name FROM subjects WHERE id=" + to_string(subjectID) + ";");
+    return result.size() > 0 ? (result[0])[0] : "-1";
 }
 
 int Database::getSubjectID(string subjectName){
-    int id = stoi((this->query("SELECT id FROM subjects WHERE name=\"" + subjectName + "\";")[0])[0]);
-    return id == SQLITE_ERROR ? NULL : id;
+    vector<vector<string>> result = this->query("SELECT id FROM subjects WHERE name=\"" + subjectName + "\";");
+    return result.size() > 0 ? stoi((result[0])[0]) : -1;
 }
 
 bool Database::isSubjectIDValid(int id){
-    return this->getSubjectName(id) != "" ? true : false;
+    return this->getSubjectName(id) != "-1" ? true : false;
 }
 
 bool Database::isSubjectNameValid(string name){
-    return this->getSubjectID(name) != NULL ? true : false;
+    return this->getSubjectID(name) != -1 ? true : false;
 }
 
 void Database::close(){

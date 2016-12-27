@@ -10,17 +10,17 @@
 #define Message_hpp
 
 #include <iostream>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-
-#include "Database.hpp"
 
 using std::string;
 using std::cout;
 using std::cin;
 using std::endl;
+using std::to_string;
+
+// Forward declaration
+class Database;
 
 // ### General ###
 string colorText(string inputText, int colorCode);
@@ -32,6 +32,9 @@ void MissingArgsMessage();
 
 bool DoesSubjectExist();
 void AskSubjectNameAndID(string* name, int* id, Database* db);
+int AskExistingSubjectID(Database* db);
+string AskNewSubjectName(Database* db);
+string AskExistingSubjectName(Database* db);
 
 // ### OpenCV ###
 void VersionMessage(string opencv_version);
@@ -41,14 +44,17 @@ void SuccessLoadingHaarMessage();
 // LBPR
 void ErrorLoadingLBPRMessage();
 void SuccessLoadingLBPRMessage();
-void InitEmptyLBPRMessage();
+void WarningInitEmptyLBPRMessage();
+void ErrorUpdateNotInitializedLBPR();
 // Camera
 void EmptyFrameMessage();
 void ErrorOpeningCameraMessage();
 // Mode transition
 void LearningModeMessage();
-// TODO :
-//void ScanningModeMessage();
+void ScanningModeMessage();
+// Save LBPR file
+string AskWhereToSaveRecognizer();
+
 // ### File Loader ###
 void InvalidDirectoryMessage(string path);
 void FileFoundMessage(string filename, string path);
@@ -61,6 +67,8 @@ void SuccessCreateDBMessage();
 // Access
 void ErrorAccessDBMessage(string error);
 void SuccessAccessDBMessage();
+// Insert
+void ErrorInsertSubjectDBMessage(string error);
 
 void ErrorExecuteQueryDBMessage(string query, string error);
 

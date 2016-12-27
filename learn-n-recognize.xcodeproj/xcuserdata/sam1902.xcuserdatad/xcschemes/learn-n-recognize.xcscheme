@@ -67,6 +67,10 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "n"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "/Users/sam1902/Programmation/C++/learn-n-recognize/haarcascade_frontalface_default.xml"
             isEnabled = "YES">
          </CommandLineArgument>

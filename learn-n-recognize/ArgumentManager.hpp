@@ -9,13 +9,20 @@
 #ifndef ArgumentManager_hpp
 #define ArgumentManager_hpp
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
 #include "Message.hpp"
 
-using namespace std;
+using std::stoi;
+using std::stof;
+
+// Must already be included in Message.hpp
+using std::cout;
+using std::cin;
+using std::vector;
+using std::endl;
+using std::string;
 
 class ArgumentManager {
     
@@ -38,7 +45,7 @@ public:
     
     ArgumentManager(int argc, const char * argv[]);
     
-    bool AskForArgs(int argc, const char** argv[]);
+    vector<string> AskForArgs(const char* argv_zero);
 };
 
 #endif /* ArgumentManager_hpp */

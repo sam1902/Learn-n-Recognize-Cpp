@@ -11,13 +11,15 @@
 
 #define DEFAULT_DB_PATH "lrn_db.sqlite"
 
-#include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <vector>
 #include <sqlite3.h> 
 #include "Message.hpp"
 
-using namespace std;
+using std::vector;
+using std::to_string;
+using std::string;
 
 class Database {
 private:

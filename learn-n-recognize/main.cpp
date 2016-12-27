@@ -7,18 +7,17 @@
 //
 
 #include <iostream>
-#include <stdio.h>
 #include <stdlib.h>
 
 #include <opencv2/opencv.hpp>
-#include <opencv2/face.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv/cvaux.hpp>
-#include <opencv2/objdetect/objdetect.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+//#include <opencv2/face.hpp>
+//#include <opencv2/highgui/highgui.hpp>
+//#include <opencv/cvaux.hpp>
+//#include <opencv2/objdetect/objdetect.hpp>
+//#include <opencv2/imgproc/imgproc.hpp>
 
-#include "Message.hpp"
 #include "Database.hpp"
+#include "Message.hpp"
 #include "ArgumentManager.hpp"
 #include "HaarCascade.hpp"
 #include "LBPRecognizer.hpp"
@@ -28,8 +27,10 @@
 // Set the number of frame before learning the stack
 #define FRAMES_BEFORE_LEARNING 30
 
-using namespace std;
-using namespace cv;
+using cv::VideoCapture;
+using cv::waitKey;
+
+void SaveAndExit(LBPRecognizer* rec);
 
 /** Global variables **/
 
@@ -58,7 +59,7 @@ int main(int argc, const char * argv[]){
     HaarCascade* hc = new HaarCascade(am->face_cascade_path);
     // LBPR recognize and identify the faces, it gives us their id
     LBPRecognizer* rec;
-    if(am->recognizer_path.size() > 0)
+    if(am->recognizer_path.size() > 1)
         rec = new LBPRecognizer(am->recognizer_path);
     else
         rec = new LBPRecognizer();
@@ -87,31 +88,39 @@ int main(int argc, const char * argv[]){
         switch (currentMode) {
             // Scanning mode
             case SCAN:
+                ScanningModeMessage();
+                Countdown(3);
                 while (true){
                     // Save the current frame
                     cap >> currentFrame;
                     // Detect every faces on it
                     faces = hc->detectFaces(&currentFrame);
                     for(int i = 0; i < faces.size(); i++){
-                        // id of the detected face
-                        int id = -1;
-                        // confidence of the detection
-                        double confidence = 0.0;
-                        // currentFrame(faces[i]) crop workingFrame to the Rect faces[i]
-                        // Get subject's id from image using LBPH
-                        rec->recognize(currentFrame(faces[i]), &id, &confidence);
-                        // Draw detected name and confidence on the current frame
-                        rec->drawNameAndConf(&currentFrame, faces[i], db->getSubjectName(id), to_string(confidence));
+                        // if we've initialized our LBPR
+                        if(!rec->isEmpty()){
+                            // id of the detected face
+                            int id = -1;
+                            // confidence of the detection
+                            double confidence = 0.0;
+                            // currentFrame(faces[i]) crop workingFrame to the Rect faces[i]
+                            // Get subject's id from image using LBPH
+                            rec->recognize(currentFrame(faces[i]), &id, &confidence);
+                            // Draw detected name and confidence on the current frame
+                            rec->drawNameAndConf(&currentFrame, faces[i], db->getSubjectName(id), to_string(confidence));
+                        }else{
+                            // otherwise, we can't recognize the faces
+                            rec->drawNameAndConf(&currentFrame, faces[i], " ? ", "-");
+                        }
                     }
                     // Draw rectangle around every faces
                     hc->drawRect(&currentFrame, faces);
                     // Display the frame
-                    imshow("Learn'n'Recognize - Scan", currentFrame);
+                    imshow("Learn'n'Recognize", currentFrame);
                     
                     // Wait 1ms for key
                     char key = (char)waitKey(1);
-                    // Exit if we pressed 'q'
-                    if( key == 'q' ) { break;}
+                    // Save and exit if we pressed 'q'
+                    if( key == 'q' ) { SaveAndExit(rec);}
                     // If we pressed 'l'
                     if( key == 'l' ) {
                         // Go to learning
@@ -131,16 +140,20 @@ int main(int argc, const char * argv[]){
                     
                 }else{
                     /* New subject */
-                    // TODO: code what happend if new subject
-                    // - Get his name
-                    // - Register hime
-                    // - Get him an id
-                    // - Display message
-                    // - Display countdown
+                    
+                    subject_name = AskNewSubjectName(db);
+                    // Insert subject into db and get his new id
+                    subject_id = db->insertSubject(subject_name);
+                    // Exit learning mode if we failed to insert the subject into db
+                    if(subject_id == -1){
+                        currentMode = SCAN;
+                        break;
+                    }
                 }
                 
                 // Tell the user what da hell is happning
                 LearningModeMessage();
+                // Wait 7 sec
                 Countdown(7);
                 
                 while (true){
@@ -156,7 +169,7 @@ int main(int argc, const char * argv[]){
                         framesToLearn.push_back(currentFrame(faces[i]));
                     }
                     
-                    // If we've got
+                    // If we've got enough frames
                     if(framesToLearn.size() > FRAMES_BEFORE_LEARNING){
                         vector<int> labels(framesToLearn.size());
                         for (int i = 0; i < framesToLearn.size(); i++) {
@@ -170,13 +183,16 @@ int main(int argc, const char * argv[]){
                         framesToLearn.clear();
                     }
                     
+                    // Draw rectangles around faces
+                    hc->drawRect(&currentFrame, faces);
+                    
                     // Display the frame
-                    imshow("Learn'n'Recognize - Learn", currentFrame);
+                    imshow("Learn'n'Recognize", currentFrame);
                     
                     // Wait 1ms for key
                     char key = (char)waitKey(1);
-                    // Exit if we pressed 'q'
-                    if( key == 'q' ) { break;}
+                    // Save and exit if we pressed 'q'
+                    if( key == 'q' ) { SaveAndExit(rec);}
                     // If we pressed 's' or spacebar
                     if( key == 's' || key == ' ') {
                         // Reset name and id
@@ -188,18 +204,16 @@ int main(int argc, const char * argv[]){
                     }
                 }
                 break;
-                
         }
-        
-        // Wait 1ms for key
-        char key = (char)waitKey(1);
-        // Exit if we pressed 'q'
-        if( key == 'q' ) { break;}
     }
-    
-    // Say goodbye
-    ExitMessage();
-    exit(EXIT_SUCCESS);
     return 0;
 }
 
+void SaveAndExit(LBPRecognizer* rec){
+    // Save our recognizer
+    rec->save(AskWhereToSaveRecognizer() + "/LBPH_recognizer.xml");
+    // Say goodbye
+    ExitMessage();
+    exit(EXIT_SUCCESS);
+    return;
+}

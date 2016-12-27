@@ -9,14 +9,21 @@
 #ifndef HaarCascade_hpp
 #define HaarCascade_hpp
 
-#include <stdio.h>
+#include <iostream>
 #include <vector>
 #include <opencv2/opencv.hpp>
 
 #include "Message.hpp"
 
-using namespace std;
-using namespace cv;
+using std::string;
+using std::vector;
+
+using cv::Scalar;
+using cv::Mat;
+using cv::Rect;
+using cv::Size;
+using cv::Point;
+using cv::CascadeClassifier;
 
 class HaarCascade{
 private:
