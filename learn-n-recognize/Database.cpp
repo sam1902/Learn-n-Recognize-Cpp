@@ -115,13 +115,20 @@ vector<vector<string>> Database::query(string query){
 
 string Database::getSubjectName(int subjectID){
     string name = (this->query("SELECT name FROM subjects WHERE id=" + to_string(subjectID) + ";")[0])[0];
-    return name;
-//    return name == to_string(SQLITE_ERROR) ? NULL : name;
+    return name == to_string(SQLITE_ERROR) ? "" : name;
 }
 
 int Database::getSubjectID(string subjectName){
-    string name = (this->query("SELECT id FROM subjects WHERE name=\"" + subjectName + "\";")[0])[0];
-    return name == to_string(SQLITE_ERROR) ? NULL : stoi(name);
+    int id = stoi((this->query("SELECT id FROM subjects WHERE name=\"" + subjectName + "\";")[0])[0]);
+    return id == SQLITE_ERROR ? NULL : id;
+}
+
+bool Database::isSubjectIDValid(int id){
+    return this->getSubjectName(id) != "" ? true : false;
+}
+
+bool Database::isSubjectNameValid(string name){
+    return this->getSubjectID(name) != NULL ? true : false;
 }
 
 void Database::close(){

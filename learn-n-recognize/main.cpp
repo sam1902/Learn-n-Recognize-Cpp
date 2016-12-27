@@ -25,6 +25,8 @@
 
 // Set default mode to scan
 #define DEFAULT_MODE SCAN
+// Set the number of frame before learning the stack
+#define FRAMES_BEFORE_LEARNING 30
 
 using namespace std;
 using namespace cv;
@@ -55,7 +57,11 @@ int main(int argc, const char * argv[]){
     // Haar Cascade detect human faces and get us their positions
     HaarCascade* hc = new HaarCascade(am->face_cascade_path);
     // LBPR recognize and identify the faces, it gives us their id
-    LBPRecognizer* rec = new LBPRecognizer(am->recognizer_path);
+    LBPRecognizer* rec;
+    if(am->recognizer_path.size() > 0)
+        rec = new LBPRecognizer(am->recognizer_path);
+    else
+        rec = new LBPRecognizer();
     
     // Open camera image stream
     VideoCapture cap(am->cameraID);
@@ -69,43 +75,126 @@ int main(int argc, const char * argv[]){
     vector<Rect> faces;
     // This will contain the current frame we will work with
     Mat currentFrame;
+    // This will contain the name of the subject we are learning the face
+    string subject_name;
+    // This will contain the id of the subject we are learning the face
+    int subject_id = NULL;
+    
+    // This will contain some of the last frames to update/train the recognizer later with it
+    vector<Mat> framesToLearn;
+    
     while (true) {
-        // Save the current frame
-        cap >> currentFrame;
-        // Detect every faces on it
-        faces = hc->detectFaces(&currentFrame);
-        
         switch (currentMode) {
             // Scanning mode
             case SCAN:
-                for(int i = 0; i < faces.size(); i++){
-                    // id of the detected face
-                    int id = -1;
-                    // confidence of the detection
-                    double confidence = 0.0;
-                    // currentFrame(faces[i]) crop workingFrame to the Rect faces[i]
-                    // Get subject's id from image using LBPH
-                    rec->recognize(currentFrame(faces[i]), &id, &confidence);
-                    // Draw detected name and confidence on the current frame
-                    rec->drawNameAndConf(&currentFrame, faces[i], db->getSubjectName(id), to_string(confidence));
+                while (true){
+                    // Save the current frame
+                    cap >> currentFrame;
+                    // Detect every faces on it
+                    faces = hc->detectFaces(&currentFrame);
+                    for(int i = 0; i < faces.size(); i++){
+                        // id of the detected face
+                        int id = -1;
+                        // confidence of the detection
+                        double confidence = 0.0;
+                        // currentFrame(faces[i]) crop workingFrame to the Rect faces[i]
+                        // Get subject's id from image using LBPH
+                        rec->recognize(currentFrame(faces[i]), &id, &confidence);
+                        // Draw detected name and confidence on the current frame
+                        rec->drawNameAndConf(&currentFrame, faces[i], db->getSubjectName(id), to_string(confidence));
+                    }
+                    // Draw rectangle around every faces
+                    hc->drawRect(&currentFrame, faces);
+                    // Display the frame
+                    imshow("Learn'n'Recognize - Scan", currentFrame);
+                    
+                    // Wait 1ms for key
+                    char key = (char)waitKey(1);
+                    // Exit if we pressed 'q'
+                    if( key == 'q' ) { break;}
+                    // If we pressed 'l'
+                    if( key == 'l' ) {
+                        // Go to learning
+                        currentMode = LEARN;
+                        break;
+                    }
                 }
-                // Draw rectangle around every faces
-                hc->drawRect(&currentFrame, faces);
-                
                 break;
             // Learning mode
             case LEARN:
-                // TODO: Work here and debug scanning mode
+                
+                if (DoesSubjectExist()){
+                    /* Subject already exist in database */
+                    
+                    // Get his name and id
+                    AskSubjectNameAndID(&subject_name, &subject_id, db);
+                    
+                }else{
+                    /* New subject */
+                    // TODO: code what happend if new subject
+                    // - Get his name
+                    // - Register hime
+                    // - Get him an id
+                    // - Display message
+                    // - Display countdown
+                }
+                
+                // Tell the user what da hell is happning
+                LearningModeMessage();
+                Countdown(7);
+                
+                while (true){
+                    // Save the current frame
+                    cap >> currentFrame;
+                    // Detect every faces on it
+                    faces = hc->detectFaces(&currentFrame);
+                    
+                    // Theoretically faces.size() = 1 , but meh
+                    for (int i = 0; i < faces.size(); i++) {
+                        // Here, we add the faces to a stack to learn them when they'll be
+                        // a bunch of them
+                        framesToLearn.push_back(currentFrame(faces[i]));
+                    }
+                    
+                    // If we've got
+                    if(framesToLearn.size() > FRAMES_BEFORE_LEARNING){
+                        vector<int> labels(framesToLearn.size());
+                        for (int i = 0; i < framesToLearn.size(); i++) {
+                            labels[i] = subject_id;
+                        }
+                        if(rec->isEmpty())
+                            rec->train(framesToLearn, labels);
+                        else
+                            rec->update(framesToLearn, labels);
+                        // Since we don't wanna re-learn the same frame, clear the stack
+                        framesToLearn.clear();
+                    }
+                    
+                    // Display the frame
+                    imshow("Learn'n'Recognize - Learn", currentFrame);
+                    
+                    // Wait 1ms for key
+                    char key = (char)waitKey(1);
+                    // Exit if we pressed 'q'
+                    if( key == 'q' ) { break;}
+                    // If we pressed 's' or spacebar
+                    if( key == 's' || key == ' ') {
+                        // Reset name and id
+                        subject_id = NULL;
+                        subject_name = "";
+                        // Go to scanning mode
+                        currentMode = SCAN;
+                        break;
+                    }
+                }
                 break;
+                
         }
         
-        // Display the marked frame
-        imshow("Learn'n'Recognize", currentFrame);
-        
         // Wait 1ms for key
-        int key = waitKey(1);
+        char key = (char)waitKey(1);
         // Exit if we pressed 'q'
-        if( (char)key == 'q' ) { break;}
+        if( key == 'q' ) { break;}
     }
     
     // Say goodbye

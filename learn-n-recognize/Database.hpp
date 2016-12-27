@@ -39,6 +39,9 @@ public:
     // Execute query and return the result
     // First column of first row contains to_string(SQLITE_ERROR) if error happnd
     vector<vector<string>> query(string query);
+    
+    bool isSubjectIDValid(int id);
+    bool isSubjectNameValid(string name);
     void close();
 };
 

@@ -29,12 +29,18 @@ using namespace face;
 
 class LBPRecognizer {
 private:
+    bool isFaceRecognizerEmpty = true;
     Ptr<cv::face::FaceRecognizer> model;
 public:
     LBPRecognizer(string path);
+    LBPRecognizer();
     bool load(string path);
+    void save(string path);
     void recognize(Mat frame, int* id, double* confidence);
     void drawNameAndConf(Mat* frame, Rect face, string name, string conf);
+    inline bool isEmpty();
+    void train(vector<Mat> src, vector<int> labels);
+    void update(vector<Mat> src, vector<int> labels);
 };
 
 
