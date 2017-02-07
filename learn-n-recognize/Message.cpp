@@ -8,20 +8,6 @@
 
 #include "Message.hpp"
 
-#include "Database.hpp"
-
-string colorText(string inputText, int colorCode){
-    // 0: black
-    // 1: red
-    // 2: green
-    // 3: yellow
-    // 4: blue
-    // 5: magenta
-    // 6: cyan
-    // 7: white
-    return "\033[1;3" + std::to_string(colorCode) + "m" + inputText + "\033[0m";
-}
-
 // ### General ###
 
 void ClearMessage(){
@@ -58,92 +44,17 @@ void MissingArgsMessage(){
     << endl;
 }
 
-bool DoesSubjectExist(){
-    char answ;
-    do{
-        cout << "Le sujet est-il déjà enregistré ? [y/n]" << endl;
-        cin >> answ;
-    } while( !cin.fail() && answ!='y' && answ!='n' );
-    return answ=='y' ? true : false;
-}
-
-void AskSubjectNameAndID(string* name, int* id, Database* db){
-    char answ;
-    do{
-        cout << "Connaissez-vous l'identifiant du sujet ? [y/n]" << endl;
-        cin >> answ;
-    } while( !cin.fail() && answ!='y' && answ!='n' );
-    
-    if(answ == 'y'){
-        // ID is known
-        *id = AskExistingSubjectID(db);
-        
-        *name = db->getSubjectName(*id);
-    }else{
-        // Name is known
-        *name = AskExistingSubjectName(db);
-        
-        *id = db->getSubjectID(*name);
-    }
-}
-
-int AskExistingSubjectID(Database* db){
-    string givenID;
-    int id;
-    while(!db->isSubjectIDValid(id)){
-        do{
-            cout << "Quel est l'identifiant du sujet ?" << endl;
-            cin >> givenID;
-        } while( !cin.fail() && !IsNumber(givenID) && givenID == "-1");
-        id = stoi(givenID);
-    }
-    return id;
-}
-
-string AskNewSubjectName(Database* db){
-    string givenName;
-    string name;
-    while(db->isSubjectNameValid(name)) {
-        do{
-            cout << "Quel est le nom du nouveau sujet ?" << endl;
-            getline(cin, givenName);
-        } while( !cin.fail() && !(givenName.size()>0) && givenName == "-1");
-        name = givenName;
-    }
-    return name;
-}
-
-string AskExistingSubjectName(Database* db){
-    string givenName;
-    string name;
-    while(!db->isSubjectNameValid(name)) {
-        do{
-            cout << "Quel est le nom du sujet déjà existant ?" << endl;
-            getline(cin, givenName);
-        } while( !cin.fail() && !(givenName.size()>0) && givenName == "-1");
-        name = givenName;
-    }
-    return name;
-}
-
-bool IsNumber(string nbr){
-    char* ptr;
-    strtol(nbr.c_str(), &ptr, 10);
-    return *ptr == '\0' ? true : false;
-
-}
-
 // ### OpenCV ###
 void VersionMessage(string opencv_version){
     cout << colorText("[+]", 2) << " OpenCV Version " << opencv_version << " chargé avec succes !"<< endl;
 }
 
 void EmptyFrameMessage(){
-    cout << colorText("[!] Aucune image capturé ! Break", 1) << endl;
+    cout << colorText("[!] Aucune image capturé ! Break", 3) << endl;
 }
 
 void ErrorLoadingHaarMessage(){
-    cout << colorText("[!] Erreur lors du chargement de la Face Cascade.", 1) << endl;
+    cerr << colorText("[!] Erreur lors du chargement de la Face Cascade.", 1) << endl;
 }
 
 void SuccessLoadingHaarMessage(){
@@ -151,7 +62,7 @@ void SuccessLoadingHaarMessage(){
 }
 
 void ErrorLoadingLBPRMessage(){
-    cout << colorText("[!] Erreur lors du chargement de LBPR.", 1) << endl;
+    cerr << colorText("[!] Erreur lors du chargement de LBPR.", 1) << endl;
 }
 
 void SuccessLoadingLBPRMessage(){
@@ -163,11 +74,11 @@ void WarningInitEmptyLBPRMessage(){
 }
 
 void ErrorUpdateNotInitializedLBPR(){
-    cout << colorText("[+] ", 3) << " Tentative d'update du LBPR vide, à la place le LBPR à été train. " << endl;
+    cerr << colorText("[+] ", 3) << " Tentative d'update du LBPR vide, à la place le LBPR à été train. " << endl;
 }
 
 void ErrorOpeningCameraMessage(){
-    cout << colorText("[!] Erreur lors de l'ouverture du flux vidéo.", 1) << endl;
+    cerr << colorText("[!] Erreur lors de l'ouverture du flux vidéo.", 1) << endl;
 }
 
 void LearningModeMessage(){
@@ -186,18 +97,10 @@ void ScanningModeMessage(){
     
     cout << colorText("[!] Début du compte à rebours", 3) << endl;
 }
-
-string AskWhereToSaveRecognizer(){
-    string dir;
-    cout << "Où souhaitez-vous sauvegarder le reconaisseur LBP ? " << endl;
-    cout << "(indiquez un répertoire dans le format suivant: /chemin/vers/repertoireSansSlash )" << endl;
-    getline(cin, dir);
-    return dir;
-}
 // ### File Loader ###
 
 void InvalidDirectoryMessage(string path){
-    cout << colorText("[!] Erreur l'ouverture de ", 1) << path << endl;
+    cerr << colorText("[!] Erreur l'ouverture de ", 1) << path << endl;
 }
 
 void FileFoundMessage(string filename, string path){
@@ -205,17 +108,17 @@ void FileFoundMessage(string filename, string path){
 }
 
 void FileNotFoundMessage(string filename, string path){
-    cout << colorText("[!] ", 1) << filename << colorText(" n'a pas été trouvé dans ", 1) << path << endl;
+    cerr << colorText("[!] ", 1) << filename << colorText(" n'a pas été trouvé dans ", 1) << path << endl;
 }
 
 // #### Database ####
 
 void ErrorAccessDBMessage(string error){
-    cout << colorText("[!] Impossible d'accèder à la base de données:", 1) << error << endl;
+    cerr << colorText("[!] Impossible d'accèder à la base de données:", 1) << error << endl;
 }
 
 void ErrorCreateDBMessage(string error){
-    cout << colorText("[!] Impossible de créer la base de données:", 1) << error << endl;
+    cerr << colorText("[!] Impossible de créer la base de données:", 1) << error << endl;
 }
 
 void SuccessAccessDBMessage(){
@@ -226,10 +129,26 @@ void SuccessCreateDBMessage(){
     cout << colorText("[+] ", 2) << "Création de la base de données réussi ! " << endl;
 }
 
+void SuccessFindSubject(){
+    cout << colorText("[+] ", 2) << "Le sujet à été trouvé ! " << endl;
+}
+
+void DisplayIDSubject(string id){
+    cout << colorText("[+] ", 2) << "L'identifiant du sujet est: " << id << endl;
+}
+
+void DisplayNameSubject(string name){
+    cout << colorText("[+] ", 2) << "Le nom du sujet est: " << name << endl;
+}
+
+void InvalidIDSubjet(){
+    cout << colorText("[!] L'identifiant du sujet est introuvable !", 1) << endl;
+}
+
 void ErrorInsertSubjectDBMessage(string error){
-    cout << colorText("[!] Impossible d'ajouter le sujet à la base de données:", 1) << error << endl;
+    cerr << colorText("[!] Impossible d'ajouter le sujet à la base de données:", 1) << error << endl;
 }
 
 void ErrorExecuteQueryDBMessage(string query, string error){
-    cout << colorText("[!] Impossible d'exécuter la requète", 1) << " \"" << query << "\" : " << error << endl;
+    cerr << colorText("[!] Impossible d'exécuter la requète", 1) << " \"" << query << "\" : " << error << endl;
 }

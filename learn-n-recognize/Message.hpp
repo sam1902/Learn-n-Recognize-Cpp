@@ -10,31 +10,23 @@
 #define Message_hpp
 
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 #include <unistd.h>
+#include "Miscellaneous.hpp"
 
 using std::string;
 using std::cout;
+using std::cerr;
 using std::cin;
 using std::endl;
 using std::to_string;
 
-// Forward declaration
-class Database;
-
 // ### General ###
-string colorText(string inputText, int colorCode);
 void ClearMessage();
 void ExitMessage();
 void CreditsMessage();
 void Countdown(int seconds);
 void MissingArgsMessage();
-
-bool DoesSubjectExist();
-void AskSubjectNameAndID(string* name, int* id, Database* db);
-int AskExistingSubjectID(Database* db);
-string AskNewSubjectName(Database* db);
-string AskExistingSubjectName(Database* db);
 
 // ### OpenCV ###
 void VersionMessage(string opencv_version);
@@ -52,8 +44,6 @@ void ErrorOpeningCameraMessage();
 // Mode transition
 void LearningModeMessage();
 void ScanningModeMessage();
-// Save LBPR file
-string AskWhereToSaveRecognizer();
 
 // ### File Loader ###
 void InvalidDirectoryMessage(string path);
@@ -67,11 +57,14 @@ void SuccessCreateDBMessage();
 // Access
 void ErrorAccessDBMessage(string error);
 void SuccessAccessDBMessage();
+void SuccessFindSubject();
+void DisplayIDSubject(string id);
+void DisplayNameSubject(string name);
+void InvalidIDSubjet();
 // Insert
 void ErrorInsertSubjectDBMessage(string error);
 
 void ErrorExecuteQueryDBMessage(string query, string error);
 
-bool IsNumber(string nbr);
 
 #endif /* Message_hpp */

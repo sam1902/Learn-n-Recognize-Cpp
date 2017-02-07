@@ -13,7 +13,7 @@
 #define FONT_SIZE 0.5
 
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 #include <vector>
 
 #include <opencv2/opencv.hpp>
@@ -24,6 +24,7 @@
 //#include <opencv2/imgproc/imgproc.hpp>
 
 #include "Message.hpp"
+#include "Miscellaneous.hpp"
 
 using std::string;
 using std::vector;
@@ -52,6 +53,7 @@ public:
     LBPRecognizer();
     bool load(string path);
     void save(string path);
+    void save();
     void recognize(Mat frame, int* id, double* confidence);
     void drawNameAndConf(Mat* frame, Rect face, string name, string conf);
     bool isEmpty();

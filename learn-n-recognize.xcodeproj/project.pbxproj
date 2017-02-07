@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D1C15871E4A317A001F6EFF /* Miscellaneous.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D1C15851E4A317A001F6EFF /* Miscellaneous.cpp */; };
 		7D4C2B2D1E0BB3BB0026000F /* Message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D4C2B2B1E0BB3BB0026000F /* Message.cpp */; };
 		7D4C2B321E0BE31B0026000F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D4C2B301E0BE31B0026000F /* Database.cpp */; };
 		7D5E41C31DD6608A00D8805A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E41C21DD6608A00D8805A /* main.cpp */; };
 		7D70EF541E10436E00842923 /* HaarCascade.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D70EF521E10436E00842923 /* HaarCascade.cpp */; };
 		7D70EF571E1064EC00842923 /* LBPRecognizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D70EF551E1064EC00842923 /* LBPRecognizer.cpp */; };
+		7D8F8DFA1E17E88200374C5F /* AskUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D8F8DF81E17E88200374C5F /* AskUser.cpp */; };
 		7DF0A7561E0EB70C0017AC57 /* ArgumentManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DF0A7541E0EB70C0017AC57 /* ArgumentManager.cpp */; };
 /* End PBXBuildFile section */
 
@@ -28,23 +30,26 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7D1C15851E4A317A001F6EFF /* Miscellaneous.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Miscellaneous.cpp; sourceTree = "<group>"; };
+		7D1C15861E4A317A001F6EFF /* Miscellaneous.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Miscellaneous.hpp; sourceTree = "<group>"; };
 		7D4C2B2B1E0BB3BB0026000F /* Message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Message.cpp; sourceTree = "<group>"; };
-		7D4C2B2C1E0BB3BB0026000F /* Message.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Message.hpp; sourceTree = "<group>"; };
+		7D4C2B2C1E0BB3BB0026000F /* Message.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = Message.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		7D4C2B301E0BE31B0026000F /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
 		7D4C2B311E0BE31B0026000F /* Database.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Database.hpp; sourceTree = "<group>"; };
 		7D5E41BF1DD6608A00D8805A /* learn-n-recognize */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "learn-n-recognize"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7D5E41C21DD6608A00D8805A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		7D5E41C21DD6608A00D8805A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = main.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		7D70EF521E10436E00842923 /* HaarCascade.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HaarCascade.cpp; sourceTree = "<group>"; };
 		7D70EF531E10436E00842923 /* HaarCascade.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HaarCascade.hpp; sourceTree = "<group>"; };
 		7D70EF551E1064EC00842923 /* LBPRecognizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LBPRecognizer.cpp; sourceTree = "<group>"; };
-		7D70EF561E1064EC00842923 /* LBPRecognizer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LBPRecognizer.hpp; sourceTree = "<group>"; };
+		7D70EF561E1064EC00842923 /* LBPRecognizer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = LBPRecognizer.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		7D8F8DF81E17E88200374C5F /* AskUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AskUser.cpp; sourceTree = "<group>"; };
+		7D8F8DF91E17E88200374C5F /* AskUser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AskUser.hpp; sourceTree = "<group>"; };
 		7DEFCB311E13228700F8FD80 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7DEFCB321E13229300F8FD80 /* learn_n_recognize_DB.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = learn_n_recognize_DB.db; sourceTree = "<group>"; };
 		7DEFCB331E13229A00F8FD80 /* haarcascade_frontalface_default.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = haarcascade_frontalface_default.xml; sourceTree = "<group>"; };
 		7DEFCB341E1322B600F8FD80 /* LBPH_recognizer.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LBPH_recognizer.xml; sourceTree = "<group>"; };
-		7DF0A7521E0EB4930017AC57 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		7DF0A7541E0EB70C0017AC57 /* ArgumentManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArgumentManager.cpp; sourceTree = "<group>"; };
-		7DF0A7551E0EB70C0017AC57 /* ArgumentManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ArgumentManager.hpp; sourceTree = "<group>"; };
+		7DF0A7551E0EB70C0017AC57 /* ArgumentManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = ArgumentManager.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +72,6 @@
 				7DEFCB341E1322B600F8FD80 /* LBPH_recognizer.xml */,
 				7D5E41C11DD6608A00D8805A /* learn-n-recognize */,
 				7D5E41C01DD6608A00D8805A /* Products */,
-				7DF0A7511E0EB4930017AC57 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,6 +89,8 @@
 				7D5E41C21DD6608A00D8805A /* main.cpp */,
 				7D4C2B2B1E0BB3BB0026000F /* Message.cpp */,
 				7D4C2B2C1E0BB3BB0026000F /* Message.hpp */,
+				7D8F8DF81E17E88200374C5F /* AskUser.cpp */,
+				7D8F8DF91E17E88200374C5F /* AskUser.hpp */,
 				7D4C2B301E0BE31B0026000F /* Database.cpp */,
 				7D4C2B311E0BE31B0026000F /* Database.hpp */,
 				7DF0A7541E0EB70C0017AC57 /* ArgumentManager.cpp */,
@@ -93,16 +99,10 @@
 				7D70EF531E10436E00842923 /* HaarCascade.hpp */,
 				7D70EF551E1064EC00842923 /* LBPRecognizer.cpp */,
 				7D70EF561E1064EC00842923 /* LBPRecognizer.hpp */,
+				7D1C15851E4A317A001F6EFF /* Miscellaneous.cpp */,
+				7D1C15861E4A317A001F6EFF /* Miscellaneous.hpp */,
 			);
 			path = "learn-n-recognize";
-			sourceTree = "<group>";
-		};
-		7DF0A7511E0EB4930017AC57 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				7DF0A7521E0EB4930017AC57 /* libsqlite3.0.tbd */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,10 +163,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D5E41C31DD6608A00D8805A /* main.cpp in Sources */,
+				7D8F8DFA1E17E88200374C5F /* AskUser.cpp in Sources */,
 				7D4C2B321E0BE31B0026000F /* Database.cpp in Sources */,
 				7D4C2B2D1E0BB3BB0026000F /* Message.cpp in Sources */,
 				7D70EF571E1064EC00842923 /* LBPRecognizer.cpp in Sources */,
 				7DF0A7561E0EB70C0017AC57 /* ArgumentManager.cpp in Sources */,
+				7D1C15871E4A317A001F6EFF /* Miscellaneous.cpp in Sources */,
 				7D70EF541E10436E00842923 /* HaarCascade.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

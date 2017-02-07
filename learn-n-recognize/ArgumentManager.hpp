@@ -9,7 +9,7 @@
 #ifndef ArgumentManager_hpp
 #define ArgumentManager_hpp
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream>
 #include <vector>
 #include "Message.hpp"

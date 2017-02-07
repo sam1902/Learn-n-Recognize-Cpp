@@ -7,7 +7,7 @@
 //
 
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <opencv2/opencv.hpp>
 //#include <opencv2/face.hpp>
@@ -16,6 +16,8 @@
 //#include <opencv2/objdetect/objdetect.hpp>
 //#include <opencv2/imgproc/imgproc.hpp>
 
+//#include <ConfigFile.hpp>
+#include "AskUser.hpp"
 #include "Database.hpp"
 #include "Message.hpp"
 #include "ArgumentManager.hpp"
@@ -24,8 +26,8 @@
 
 // Set default mode to scan
 #define DEFAULT_MODE SCAN
-// Set the number of frame before learning the stack
-#define FRAMES_BEFORE_LEARNING 30
+// Set the number of frame before learning the stack of frame we saved before
+#define NUMBER_OF_FRAMES_BEFORE_LEARNING 30
 
 using cv::VideoCapture;
 using cv::waitKey;
@@ -53,13 +55,20 @@ int main(int argc, const char * argv[]){
     
     // Arguments handler, check if every args are provided
     ArgumentManager* am = new ArgumentManager(argc, argv);
+    
     // Database containing subject's name and id
-    Database* db = new Database(am->database_path);
+    Database* db;
+    if(am->database_path.size() != 0)
+        db = new Database(am->database_path);
+    else
+        db = new Database();
+    
     // Haar Cascade detect human faces and get us their positions
     HaarCascade* hc = new HaarCascade(am->face_cascade_path);
+    
     // LBPR recognize and identify the faces, it gives us their id
     LBPRecognizer* rec;
-    if(am->recognizer_path.size() > 1)
+    if(am->recognizer_path.size() != 0)
         rec = new LBPRecognizer(am->recognizer_path);
     else
         rec = new LBPRecognizer();
@@ -106,7 +115,10 @@ int main(int argc, const char * argv[]){
                             // Get subject's id from image using LBPH
                             rec->recognize(currentFrame(faces[i]), &id, &confidence);
                             // Draw detected name and confidence on the current frame
-                            rec->drawNameAndConf(&currentFrame, faces[i], db->getSubjectName(id), to_string(confidence));
+                            if(confidence >= am->validity_threshold)
+                                rec->drawNameAndConf(&currentFrame, faces[i], db->getSubjectName(id), to_string(confidence));
+                            else
+                                rec->drawNameAndConf(&currentFrame, faces[i], " ? ", "-");
                         }else{
                             // otherwise, we can't recognize the faces
                             rec->drawNameAndConf(&currentFrame, faces[i], " ? ", "-");
@@ -132,16 +144,61 @@ int main(int argc, const char * argv[]){
             // Learning mode
             case LEARN:
                 
-                if (DoesSubjectExist()){
+                if (AskYesNo("Est-ce-que le sujet existe déjà dans la base de donnée ? (Y/n)\n")){
                     /* Subject already exist in database */
                     
-                    // Get his name and id
-                    AskSubjectNameAndID(&subject_name, &subject_id, db);
+                    if (AskYesNo("Connaissez-vous l'identifiant du sujet dans la base de donnée ? (Y/n)\n")){
+                        /* We know the subject's id */
+                        string givenIDstr = AskUser("Quel est l'identifiant du sujet ?");
+                        int givenID;
+                        if(!IsNumber(givenIDstr))
+                            givenID = -1;
+                        else
+                            givenID = stoi(givenIDstr);
+                        
+                        string tmp;
+                        while(!db->isSubjectIDValid(givenID)){
+                            InvalidIDSubjet();
+                            while(!IsNumber(tmp)){
+                                tmp = AskUser("L'identifiant doit être une donnée numérique.\n Veuillez réessayer:\n ");
+                            }
+                            givenID = stoi(tmp);
+                        }
+                        subject_id = givenID;
+                        SuccessFindSubject();
+                        
+                        subject_name = db->getSubjectName(subject_id);
+                        DisplayNameSubject(subject_name);
+                        
+                    }else if(AskYesNo("Connaissez-vous le nom du sujet dans la base de donnée ? (Y/n)\n")){
+                        /* We know the subject's name */
+                        
+                        string givenName = AskUser("Quel est le nom du sujet ?\n");
+                        while(!db->isSubjectNameValid(givenName)){
+                            givenName = AskUser("Nom du sujet invalide ! Veuillez réessayer:\n ");
+                        }
+                        subject_name = givenName;
+                        SuccessFindSubject();
+                        
+                        subject_id = db->getSubjectID(subject_name);
+                        DisplayIDSubject(to_string(subject_id));
+                    }else{
+                        /* We got neither the subject's name, nor his id... */
+                        currentMode = SCAN;
+                        break;
+                    }
                     
                 }else{
                     /* New subject */
                     
-                    subject_name = AskNewSubjectName(db);
+                    { // Get the new name
+                        string tmpName = AskUser("Quel est est le nom du nouveau sujet ?\n");
+                        while (db->isSubjectNameValid(tmpName)) {
+                            tmpName = AskUser("Le nom demandé est déjà pris, veuillez en choisir un autre: \n");
+                        }
+                        subject_name = tmpName;
+                    }
+                    
                     // Insert subject into db and get his new id
                     subject_id = db->insertSubject(subject_name);
                     // Exit learning mode if we failed to insert the subject into db
@@ -170,7 +227,7 @@ int main(int argc, const char * argv[]){
                     }
                     
                     // If we've got enough frames
-                    if(framesToLearn.size() > FRAMES_BEFORE_LEARNING){
+                    if(framesToLearn.size() > NUMBER_OF_FRAMES_BEFORE_LEARNING){
                         vector<int> labels(framesToLearn.size());
                         for (int i = 0; i < framesToLearn.size(); i++) {
                             labels[i] = subject_id;
@@ -211,7 +268,7 @@ int main(int argc, const char * argv[]){
 
 void SaveAndExit(LBPRecognizer* rec){
     // Save our recognizer
-    rec->save(AskWhereToSaveRecognizer() + "/LBPH_recognizer.xml");
+    rec->save();
     // Say goodbye
     ExitMessage();
     exit(EXIT_SUCCESS);

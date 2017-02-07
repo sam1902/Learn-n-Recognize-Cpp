@@ -9,13 +9,12 @@
 #ifndef Database_hpp
 #define Database_hpp
 
-#define DEFAULT_DB_PATH "lrn_db.sqlite"
-
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 #include <vector>
 #include <sqlite3.h> 
 #include "Message.hpp"
+#include "Miscellaneous.hpp"
 
 using std::vector;
 using std::to_string;

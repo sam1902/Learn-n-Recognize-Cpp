@@ -32,8 +32,12 @@ bool LBPRecognizer::load(string path){
     }
 }
 
+void LBPRecognizer::save(){
+    this->model->save("LBPH_recognizer_" + random_string((size_t)5) + "_.xml");
+}
+
 void LBPRecognizer::save(string path){
-    this->model->save(path);
+    this->model->save(path + "/LBPH_recognizer_" + random_string((size_t)5) + "_.xml");
 }
 
 void LBPRecognizer::train(vector<Mat> src, vector<int> labels){
@@ -99,4 +103,3 @@ vector<Mat> LBPRecognizer::toGrey(vector<Mat> src){
     }
     return output;
 }
-

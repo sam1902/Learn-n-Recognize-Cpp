@@ -26,8 +26,8 @@ vector<Rect> HaarCascade::detectFaces(Mat* frame){
     cvtColor(*frame, frame_gray, CV_BGR2GRAY );
     // Normalize bins to 255
     equalizeHist( frame_gray, frame_gray );
-    
-    //-- Detect faces
+        
+    // Detect faces
     this->face_cascade.detectMultiScale( frame_gray, faces, 1.3, 5, 0|CV_HAAR_SCALE_IMAGE, Size(70, 70) );
     return faces;
 }

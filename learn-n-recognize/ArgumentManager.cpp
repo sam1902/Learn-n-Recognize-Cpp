@@ -33,10 +33,14 @@ vector<string> ArgumentManager::AskForArgs(const char* argv_zero){
     vector<string> argv(7);
     argv[0] = argv_zero;
     cout << "Veuillez entrer les arguments:" << endl;
-    cout << "\tChemin vers la base de donnée ?" << endl;
+    cout << "\tChemin vers la base de donnée (n si aucun) ?" << endl;
     cin >> argv[1];
-    cout << "\tChemin vers le reconaisseur LBP ( n si aucun)?" << endl;
+    if(argv[1] == "n")
+        argv[1]= "";
+    cout << "\tChemin vers le reconaisseur LBP (n si aucun)?" << endl;
     cin >> argv[2];
+    if(argv[2] == "n")
+        argv[2]= "";
     cout << "\tChemin vers la Face Cascade ?" << endl;
     cin >> argv[3];
     cout << "\tSeuil de validité au delà duquel le visage détecté est considéré comme valide en % ? (65 à 75 recommendé)" << endl;

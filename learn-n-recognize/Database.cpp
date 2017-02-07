@@ -6,7 +6,6 @@
 //  Copyright © 2016 Samuel Prevost. All rights reserved.
 //
 
-#include <iostream>
 // Forward declaration
 #include "Database.hpp"
 
@@ -20,7 +19,7 @@ Database::Database(string pathToDB){
 
 // Initialize a new one
 Database::Database(){
-    if(!this->create(DEFAULT_DB_PATH, this->db))
+    if(!this->create("lrn_db_"+ random_string((size_t)5) +".sqlite", this->db))
         ErrorCreateDBMessage(sqlite3_errmsg(this->db));
     else
         SuccessCreateDBMessage();
@@ -136,4 +135,3 @@ bool Database::isSubjectNameValid(string name){
 void Database::close(){
     sqlite3_close(this->db);
 }
-
