@@ -38,6 +38,7 @@ void ErrorLoadingLBPRMessage();
 void SuccessLoadingLBPRMessage();
 void WarningInitEmptyLBPRMessage();
 void ErrorUpdateNotInitializedLBPR();
+void SuccessSavingLBPRMessage(string pathToLBPR);
 // Camera
 void EmptyFrameMessage();
 void ErrorOpeningCameraMessage();
@@ -63,7 +64,7 @@ void DisplayNameSubject(string name);
 void InvalidIDSubjet();
 // Insert
 void ErrorInsertSubjectDBMessage(string error);
-
+void SuccessInsertSubjectMessage(string subjectName, string subjectID);
 void ErrorExecuteQueryDBMessage(string query, string error);
 
 

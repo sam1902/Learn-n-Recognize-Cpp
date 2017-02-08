@@ -13,6 +13,8 @@
 #include <iostream>
 #include <vector>
 #include "Message.hpp"
+#include "AskUser.hpp"
+#include "Miscellaneous.hpp"
 
 using std::stoi;
 using std::stof;
@@ -31,6 +33,8 @@ public:
     string database_path;
     // Path to where the LBP recognizer archive is
     string recognizer_path;
+    // Path to save newly created files
+    string save_path;
     // Path to haar cascade XML file
     string face_cascade_path;
     

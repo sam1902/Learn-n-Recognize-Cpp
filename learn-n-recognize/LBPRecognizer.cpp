@@ -32,12 +32,16 @@ bool LBPRecognizer::load(string path){
     }
 }
 
-void LBPRecognizer::save(){
-    this->model->save("LBPH_recognizer_" + random_string((size_t)5) + "_.xml");
-}
-
 void LBPRecognizer::save(string path){
-    this->model->save(path + "/LBPH_recognizer_" + random_string((size_t)5) + "_.xml");
+    string prefix = "LBPH_recognizer_";
+    
+    // If our path doesn't end with / we need to add one:
+    if(path[path.size()-1] != '/')
+        prefix = "/" + prefix;
+    
+    string fullpath = path + prefix + timestamp("%d-%m-%Y_%H-%M-%S_%Z") + ".xml";
+    this->model->save(fullpath);
+    SuccessSavingLBPRMessage(fullpath);
 }
 
 void LBPRecognizer::train(vector<Mat> src, vector<int> labels){

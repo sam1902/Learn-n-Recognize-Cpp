@@ -97,6 +97,10 @@ void ScanningModeMessage(){
     
     cout << colorText("[!] Début du compte à rebours", 3) << endl;
 }
+
+void SuccessSavingLBPRMessage(string pathToLBPR){
+    cout << colorText("[+] ", 2) << "Sauvegarde du reconaisseur LBP réussi ! Il se trouve à l'adresse : " << endl << pathToLBPR << endl;
+}
 // ### File Loader ###
 
 void InvalidDirectoryMessage(string path){
@@ -147,6 +151,10 @@ void InvalidIDSubjet(){
 
 void ErrorInsertSubjectDBMessage(string error){
     cerr << colorText("[!] Impossible d'ajouter le sujet à la base de données:", 1) << error << endl;
+}
+
+void SuccessInsertSubjectMessage(string subjectName, string subjectID){
+    cout << colorText("[+] ", 2) << "Enregistrement du sujet réussi !" << endl << "Nom:\t\t" << subjectName << endl << "Identifiant:\t\t" << subjectID << endl;
 }
 
 void ErrorExecuteQueryDBMessage(string query, string error){

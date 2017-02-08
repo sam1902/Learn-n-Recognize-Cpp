@@ -9,44 +9,54 @@
 // Forward declaration
 #include "Database.hpp"
 
-// Open already existing one
-Database::Database(string pathToDB){
-    if(!this->open(pathToDB))
-        ErrorAccessDBMessage(sqlite3_errmsg(db));
-    else
-        SuccessAccessDBMessage();
-}
-
-// Initialize a new one
+// Constructor
 Database::Database(){
-    if(!this->create("lrn_db_"+ random_string((size_t)5) +".sqlite", this->db))
-        ErrorCreateDBMessage(sqlite3_errmsg(this->db));
-    else
-        SuccessCreateDBMessage();
     
 }
 
 Database::~Database(){
     this->close();
 }
+
+bool Database::create(string path){
+    string prefix = "lrn_db_";
     
-bool Database::open(string path){
-    return sqlite3_open_v2(path.c_str(), &this->db, SQLITE_OPEN_READWRITE, NULL) == SQLITE_OK ? true : false;
+    // If our path doesn't end with / we need to add one:
+    if(path[path.size()-1] != '/')
+        prefix = "/" + prefix;
+    
+    return this->init(path + prefix + timestamp("%d-%m-%Y_%H-%M-%S_%Z") +".sqlite") ? true : false;
 }
 
-bool Database::create(string path, sqlite3* db){
+bool Database::open(string path){
+    if(sqlite3_open_v2(path.c_str(), &this->db, SQLITE_OPEN_READWRITE, NULL) == SQLITE_OK){
+        SuccessAccessDBMessage();
+        return true;
+    }else{
+        ErrorAccessDBMessage(sqlite3_errmsg(db));
+        return false;
+    }
+}
+
+bool Database::init(string path){
     string req = "CREATE TABLE `subjects` (`id`  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `name`	varchar(255) UNIQUE);";
     sqlite3_stmt* stmt;
-    if (sqlite3_open_v2(path.c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL) == SQLITE_OK){
-        sqlite3_prepare(db, req.c_str(), -1, &stmt, NULL);
+    if (sqlite3_open_v2(path.c_str(), &this->db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_FULLMUTEX, NULL) == SQLITE_OK){
+        sqlite3_prepare(this->db, req.c_str(), -1, &stmt, NULL);
         
-        if(sqlite3_step(stmt) != SQLITE_DONE)
+        if(sqlite3_step(stmt) != SQLITE_DONE){
+            ErrorCreateDBMessage(sqlite3_errmsg(this->db));
+            sqlite3_finalize(stmt);
             return false;
+        }
     }
-    else
+    else{
+        ErrorCreateDBMessage(sqlite3_errmsg(this->db));
+        sqlite3_finalize(stmt);
         return false;
-    
+    }
     sqlite3_finalize(stmt);
+    SuccessCreateDBMessage();
     return true;
 }
 
@@ -114,22 +124,42 @@ vector<vector<string>> Database::query(string query){
     return results;  
 }
 
+int Database::getNumberOfSubjects(){
+    
+    return (int)this->query("SELECT * FROM subjects;").size();
+}
+
 string Database::getSubjectName(int subjectID){
-    vector<vector<string>> result = this->query("SELECT name FROM subjects WHERE id=" + to_string(subjectID) + ";");
+    vector<vector<string>> result;
+    if(getNumberOfSubjects() > 0)
+        result = this->query("SELECT name FROM subjects WHERE id=" + to_string(subjectID) + ";");
+    else
+        return "-1";
     return result.size() > 0 ? (result[0])[0] : "-1";
 }
 
 int Database::getSubjectID(string subjectName){
-    vector<vector<string>> result = this->query("SELECT id FROM subjects WHERE name=\"" + subjectName + "\";");
+    vector<vector<string>> result;
+    if(getNumberOfSubjects() > 0)
+        result = this->query("SELECT id FROM subjects WHERE name=\"" + subjectName + "\";");
+    else
+        return -1;
+    
     return result.size() > 0 ? stoi((result[0])[0]) : -1;
 }
 
 bool Database::isSubjectIDValid(int id){
-    return this->getSubjectName(id) != "-1" ? true : false;
+    if(getNumberOfSubjects() > 0)
+        return this->getSubjectName(id) != "-1" ? true : false;
+    else
+        return true;
 }
 
 bool Database::isSubjectNameValid(string name){
-    return this->getSubjectID(name) != -1 ? true : false;
+    if(getNumberOfSubjects() > 0)
+        return this->getSubjectID(name) != -1 ? true : false;
+    else
+        return false;
 }
 
 void Database::close(){

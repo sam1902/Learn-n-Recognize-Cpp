@@ -25,14 +25,14 @@
 #include "LBPRecognizer.hpp"
 
 // Set default mode to scan
-#define DEFAULT_MODE SCAN
+#define DEFAULT_MODE LEARN
 // Set the number of frame before learning the stack of frame we saved before
 #define NUMBER_OF_FRAMES_BEFORE_LEARNING 30
 
 using cv::VideoCapture;
 using cv::waitKey;
 
-void SaveAndExit(LBPRecognizer* rec);
+void SaveAndExit(LBPRecognizer* rec, string pathToFolder);
 
 /** Global variables **/
 
@@ -57,11 +57,15 @@ int main(int argc, const char * argv[]){
     ArgumentManager* am = new ArgumentManager(argc, argv);
     
     // Database containing subject's name and id
-    Database* db;
+    Database* db = new Database();
+    // If we've got a path to an already existing db, open it
+    // otherwise, create one in the allocated directory
     if(am->database_path.size() != 0)
-        db = new Database(am->database_path);
+        db->open(am->database_path);
     else
-        db = new Database();
+        db->create(am->save_path);
+    
+    cout << "\tThere are " << db->getNumberOfSubjects() << " subjects."<< endl;
     
     // Haar Cascade detect human faces and get us their positions
     HaarCascade* hc = new HaarCascade(am->face_cascade_path);
@@ -132,7 +136,7 @@ int main(int argc, const char * argv[]){
                     // Wait 1ms for key
                     char key = (char)waitKey(1);
                     // Save and exit if we pressed 'q'
-                    if( key == 'q' ) { SaveAndExit(rec);}
+                    if( key == 'q' ) { SaveAndExit(rec, am->save_path); }
                     // If we pressed 'l'
                     if( key == 'l' ) {
                         // Go to learning
@@ -206,6 +210,7 @@ int main(int argc, const char * argv[]){
                         currentMode = SCAN;
                         break;
                     }
+                    SuccessInsertSubjectMessage(subject_name, to_string(subject_id));
                 }
                 
                 // Tell the user what da hell is happning
@@ -249,7 +254,7 @@ int main(int argc, const char * argv[]){
                     // Wait 1ms for key
                     char key = (char)waitKey(1);
                     // Save and exit if we pressed 'q'
-                    if( key == 'q' ) { SaveAndExit(rec);}
+                    if( key == 'q' ) { SaveAndExit(rec, am->save_path); }
                     // If we pressed 's' or spacebar
                     if( key == 's' || key == ' ') {
                         // Reset name and id
@@ -266,9 +271,11 @@ int main(int argc, const char * argv[]){
     return 0;
 }
 
-void SaveAndExit(LBPRecognizer* rec){
+void SaveAndExit(LBPRecognizer* rec, string pathToFolder){
+    // pathToFolder with or without the ending '/', it'll be normalized
+    
     // Save our recognizer
-    rec->save();
+    rec->save(pathToFolder);
     // Say goodbye
     ExitMessage();
     exit(EXIT_SUCCESS);

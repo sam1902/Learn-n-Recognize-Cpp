@@ -8,19 +8,38 @@
 
 #include "Miscellaneous.hpp"
 
-std::string random_string(size_t length){
-    auto randchar = []() -> char
-    {
-        const char charset[] =
-        "0123456789"
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "abcdefghijklmnopqrstuvwxyz";
-        const size_t max_index = (sizeof(charset) - 1);
-        return charset[ rand() % max_index ];
-    };
-    std::string str(length,0);
-    std::generate_n( str.begin(), length, randchar );
-    return str;
+std::string random_string(size_t length) {
+    srand((unsigned)time(NULL));  //generate a seed by using the current time
+    char str[length];
+    str[length-1] = '\0';
+    size_t i = 0;
+    int r;
+    
+    for(i = 0; i < length-1; ++i) {
+        for(;;) {
+            r = rand() % 57 + 65; //interval between 65 ('A') and 65+57=122 ('z')
+            if((r >= 65 && r <= 90) || (r >= 97 && r <= 122)) { // exclude '[' to '`'
+                str[i] = (char)r;
+                break;
+            }
+        }
+    }
+    
+    return (std::string)str;
+}
+
+std::string timestamp(std::string format){
+    // format example:
+    // "%a, %d.%m.%Y %H:%M:%S"
+    // Format: Mo, 15.06.2009 20:20:00
+    
+    std::time_t now = std::time(NULL);
+    std::tm * ptm = std::localtime(&now);
+    char buffer[128];
+    
+    std::strftime(buffer, 128, format.c_str(), ptm);
+    std::string bufferStr = buffer;
+    return bufferStr;
 }
 
 bool IsNumber(std::string nbr){

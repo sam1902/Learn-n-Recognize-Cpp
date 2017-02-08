@@ -23,6 +23,7 @@ using std::string;
 class Database {
 private:
     sqlite3* db;
+    bool init(string path);
 public:
     Database(string pathToDB);
     Database();
@@ -30,7 +31,7 @@ public:
     // Open already existing database
     bool open(string path);
     // Create a new database with table subject
-    bool create(string path, sqlite3* db);
+    bool create(string path);
     // Return subject's ID
     int insertSubject(string subjectName);
     // Return subject's name from ID
@@ -41,6 +42,7 @@ public:
     // First column of first row contains to_string(SQLITE_ERROR) if error happnd
     vector<vector<string>> query(string query);
     
+    int getNumberOfSubjects();
     bool isSubjectIDValid(int id);
     bool isSubjectNameValid(string name);
     void close();

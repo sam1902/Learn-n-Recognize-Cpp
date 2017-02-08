@@ -53,7 +53,6 @@ public:
     LBPRecognizer();
     bool load(string path);
     void save(string path);
-    void save();
     void recognize(Mat frame, int* id, double* confidence);
     void drawNameAndConf(Mat* frame, Rect face, string name, string conf);
     bool isEmpty();
