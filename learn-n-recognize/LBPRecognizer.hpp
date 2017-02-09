@@ -18,10 +18,6 @@
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/face.hpp>
-//#include <opencv2/highgui/highgui.hpp>
-//#include <opencv/cvaux.hpp>
-//#include <opencv2/objdetect/objdetect.hpp>
-//#include <opencv2/imgproc/imgproc.hpp>
 
 #include "Message.hpp"
 #include "Miscellaneous.hpp"

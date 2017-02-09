@@ -8,16 +8,8 @@
 
 #include <iostream>
 #include <cstdlib>
-
 #include <opencv2/opencv.hpp>
-// Usefull includes for OpenCV projects:
-//#include <opencv2/face.hpp>
-//#include <opencv2/highgui/highgui.hpp>
-//#include <opencv/cvaux.hpp>
-//#include <opencv2/objdetect/objdetect.hpp>
-//#include <opencv2/imgproc/imgproc.hpp>
 
-// Un échec #include <ConfigFile.hpp>
 #include "AskUser.hpp"
 #include "Database.hpp"
 #include "Message.hpp"
