@@ -51,12 +51,12 @@ bool Database::init(string path){
         }
     }
     else{
+        // No need to sqlite3_finilize here since stmt isn't initialized already
         ErrorCreateDBMessage(sqlite3_errmsg(this->db));
-        sqlite3_finalize(stmt);
         return false;
     }
     sqlite3_finalize(stmt);
-    SuccessCreateDBMessage();
+    SuccessCreateDBMessage(path);
     return true;
 }
 

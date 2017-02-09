@@ -55,7 +55,11 @@ public:
     void save(string path);
     void recognize(Mat frame, int* id, double* confidence);
     void drawNameAndConf(Mat* frame, Rect face, string name, string conf);
-    bool isEmpty();
+    
+    inline bool isEmpty(){
+        return this->isFaceRecognizerEmpty;
+    };
+    
     void train(vector<Mat> src, vector<int> labels);
     void update(vector<Mat> src, vector<int> labels);
 };

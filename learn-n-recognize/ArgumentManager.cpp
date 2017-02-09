@@ -10,25 +10,70 @@
 
 
 ArgumentManager::ArgumentManager(int argc, const char * argv[]){
+    // NB: strcmp() return 0 if the two string are the same, 0 is false so ! make it true so
+    // if(!strcmp(str1, str2)) is the same as if(strcmp(str1, str2) == 0) is the same as
+    // "if str1 and str2 are the same strings"
+    
+    
+    // Check if the user requested to see the help message
+    if(argc == 1){
+        HelpMessage();
+        ExitMessage();
+        exit(EXIT_SUCCESS);
+    }
+    for (int i = 1; i < argc; i++) {
+        if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "-help") || !strcmp(argv[i], "-aide")){
+            HelpMessage();
+            ExitMessage();
+            exit(EXIT_SUCCESS);
+        }
+    }
+    
     vector<string> arguements;
     if(argc < 7){
         MissingArgsMessage();
         arguements = this->AskForArgs(argv[0]);
+        
+        program_path            =   arguements[0];
+        database_path           =   arguements[1];
+        recognizer_path         =   arguements[2];
+        face_cascade_path       =   arguements[3];
+        
+        validity_threshold      =   stoi(arguements[4]);
+        cameraID                =   stoi(arguements[5]);
+        video_scaling_factor    =   stof(arguements[6]);
+        
+        save_path               =   arguements[7];
+        
     }else{
-        for (int i = 0; i < argc; i++) {
-            // You could also allocate argc-slots to arguments but meh that's only 8 args
-            arguements.push_back(argv[i]);
+        
+        program_path = argv[0];
+        
+        for (int i = 1; i < argc; i++) {
+            // strcmp return 0 if equal, <0 or >0 if less or more
+            if(!strcmp(argv[i], "-db") || !strcmp(argv[i], "-database")){
+                database_path           =       argv[i+1];
+                
+            }else if(!strcmp(argv[i], "-rec") || !strcmp(argv[i], "-recognizer")){
+                recognizer_path         =       argv[i+1];
+                
+            }else if(!strcmp(argv[i], "-haar")){
+                face_cascade_path       =       argv[i+1];
+                
+            }else if(!strcmp(argv[i], "-validityThreshold") || !strcmp(argv[i], "-vt")){
+                validity_threshold      =       stoi(argv[i+1]);
+                
+            }else if(!strcmp(argv[i], "-cam") || !strcmp(argv[i], "-cameraID")){
+                cameraID                =       stoi(argv[i+1]);
+                
+            }else if(!strcmp(argv[i], "-scale")){
+                video_scaling_factor    =       stoi(argv[i+1]);
+                
+            }else if(!strcmp(argv[i], "-save") || !strcmp(argv[i], "-s")){
+                save_path               =       argv[i+1];
+            }
         }
     }
-    database_path           =   arguements[1];
-    recognizer_path         =   arguements[2];
-    face_cascade_path       =   arguements[3];
-    
-    validity_threshold      =   stoi(arguements[4]);
-    cameraID                =   stoi(arguements[5]);
-    video_scaling_factor    =   stof(arguements[6]);
-    
-    save_path               =   arguements[7];
 }
 
 vector<string> ArgumentManager::AskForArgs(const char* argv_zero){

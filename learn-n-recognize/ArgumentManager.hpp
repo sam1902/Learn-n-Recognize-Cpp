@@ -29,6 +29,10 @@ using std::string;
 class ArgumentManager {
     
 public:
+    // On macOS:    absolute path to the program
+    // On Linux:    name of the program
+    // On Windows:  undefined behaviour
+    string program_path;
     // Path to where the SQLite database containing name and id is
     string database_path;
     // Path to where the LBP recognizer archive is
@@ -40,12 +44,12 @@ public:
     
     // Threshold after which the program will consider the
     // guessed name as valid, about 65% - 75% is normal
-    int validity_threshold;
+    int validity_threshold = 65;
     // ID of the used camera,
     // usualy 0 if only one cam is connected
-    int cameraID;
+    int cameraID = 0;
     // Scaling factor of the displayed live video stream
-    float video_scaling_factor;
+    float video_scaling_factor = 1;
     
     ArgumentManager(int argc, const char * argv[]);
     

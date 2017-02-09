@@ -88,10 +88,6 @@ void LBPRecognizer::drawNameAndConf(Mat* frame, Rect face, string name, string c
     return;
 }
 
-inline bool LBPRecognizer::isEmpty(){
-    return this->isFaceRecognizerEmpty;
-}
-
 Mat LBPRecognizer::toGrey(Mat src){
     Mat output;
     cvtColor(src, output, COLOR_BGR2GRAY);

@@ -33,14 +33,56 @@ void Countdown(int seconds){
 }
 
 void MissingArgsMessage(){
-    cout << colorText("[!] ", 1) << "Arguments manquants" << endl
-    << "Arguments: " << endl
-    << "\t• Chemin vers la base de donnée\t"                    << endl
-    << "\t• Chemin vers la Face Cascade\t"                      << endl
+    cout << colorText("[!] Arguments manquants !", 1) << endl;
+}
+
+void HelpMessage(){
+    cout << "Bienvenu dans Learn'n'Recognize,"
     << endl
-    << "\t• Seuil de validité\t\t\t(0-100)"                     << endl
-    << "\t• Identifiant de la caméra\t\t(Ex: 0)"                << endl
-    << "\t• Coef d'agrandissement video\t\t(Ex: 1)"             << endl
+    << "Syntaxe: ./learn-n-recognize " << colorText("-s /path/to/folder", 1) << colorText(" -haar /path/to/file/haar.xml", 1) << colorText(" [-db /path/to/file.database.sqlite] [-rec /path/to/file/LBPH.xml] [-vt 65] [-cam 0] [-scale 1]", 2)
+    << endl
+    << endl
+    << "Liste des commandes :"
+    << endl
+    << endl
+    << "-h , -help, -aide"
+    << endl
+    <<      "\tAffiche ce message d'aide."
+    << endl
+    << endl
+    << "-s, -save /chemin/vers/dossier"                         << colorText("\t\t\t\t\t(OBLIGATOIRE)", 1)
+    << endl
+    << "\tChemin où sauvegarder les fichiers tel que la base de donnée (si non précédement fournis) ou le nouveau reconaisseur LBP "
+    << endl
+    << endl
+    << "-haar /chemin/vers/fichier/haar.xml"                    << colorText("\t\t\t\t(OBLIGATOIRE)", 1)
+    << endl
+    <<      "\tChemin vers la Face Cascade (disponible à l'adresse : https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml) "
+    << endl
+    << endl
+    << "-db , -database /chemin/vers/fichier/database.sqlite"   << colorText("\t\t(OPTIONNEL)", 2)
+    << endl
+    <<      "\tChemin vers la base de donnée "
+    << endl
+    << endl
+    << "-rec, -recognizer /chemin/vers/fichier/LBPH.xml"        << colorText("\t\t\t(OPTIONNEL)", 2)
+    << endl
+    <<      "\tChemin vers le reconaisseur LBP "
+    << endl
+    << endl
+    << "-vt, -validityThreshold 65"                             << colorText("\t\t\t\t\t(OPTIONNEL)", 2)
+    << endl
+    <<      "\tSeuil de validité au delà duquel une détection est considéré comme trop hasardeuse (65 par défaut, en %) "
+    << endl
+    << endl
+    << "-cam, -cameraID 0"                                      << colorText("\t\t\t\t\t\t(OPTIONNEL)", 2)
+    << endl
+    <<      "\tIdentifiant de la caméra à utilisé (0 par défaut) "
+    << endl
+    << endl
+    << "-scale 1"                                               << colorText("\t\t\t\t\t\t\t(OPTIONNEL)", 2)
+    << endl
+    <<      "\tTaille de la vidéo affiché (par ratio, 1 par défaut) "
     << endl;
 }
 
@@ -129,8 +171,8 @@ void SuccessAccessDBMessage(){
     cout << colorText("[+] ", 2) << "Accès à la base de données réussi ! " << endl;
 }
 
-void SuccessCreateDBMessage(){
-    cout << colorText("[+] ", 2) << "Création de la base de données réussi ! " << endl;
+void SuccessCreateDBMessage(string pathToDB){
+    cout << colorText("[+] ", 2) << "Création de la base de données réussi ! Il se trouve à l'adresse : " << endl << pathToDB << endl;
 }
 
 void SuccessFindSubject(){

@@ -10,13 +10,14 @@
 #include <cstdlib>
 
 #include <opencv2/opencv.hpp>
+// Usefull includes for OpenCV projects:
 //#include <opencv2/face.hpp>
 //#include <opencv2/highgui/highgui.hpp>
 //#include <opencv/cvaux.hpp>
 //#include <opencv2/objdetect/objdetect.hpp>
 //#include <opencv2/imgproc/imgproc.hpp>
 
-//#include <ConfigFile.hpp>
+// Un échec #include <ConfigFile.hpp>
 #include "AskUser.hpp"
 #include "Database.hpp"
 #include "Message.hpp"
@@ -25,12 +26,9 @@
 #include "LBPRecognizer.hpp"
 
 // Set default mode to scan
-#define DEFAULT_MODE LEARN
+#define DEFAULT_MODE SCAN
 // Set the number of frame before learning the stack of frame we saved before
 #define NUMBER_OF_FRAMES_BEFORE_LEARNING 30
-
-using cv::VideoCapture;
-using cv::waitKey;
 
 void SaveAndExit(LBPRecognizer* rec, string pathToFolder);
 
@@ -44,17 +42,22 @@ enum Mode { SCAN, LEARN };
 // The selected mode
 Mode currentMode = DEFAULT_MODE;
 
+/** END: Global variables **/
+
 int main(int argc, const char * argv[]){
+    /** Main variables **/
+    
     // Clear the console
     ClearMessage();
     // Display credits
     CreditsMessage();
-    // Display current OpenCV version
-    // (3.1.0-dev for now)
-    VersionMessage(CV_VERSION);
     
     // Arguments handler, check if every args are provided
     ArgumentManager* am = new ArgumentManager(argc, argv);
+    
+    // Display current OpenCV version
+    // (3.1.0-dev for now)
+    VersionMessage(CV_VERSION);
     
     // Database containing subject's name and id
     Database* db = new Database();
@@ -64,8 +67,6 @@ int main(int argc, const char * argv[]){
         db->open(am->database_path);
     else
         db->create(am->save_path);
-    
-    cout << "\tThere are " << db->getNumberOfSubjects() << " subjects."<< endl;
     
     // Haar Cascade detect human faces and get us their positions
     HaarCascade* hc = new HaarCascade(am->face_cascade_path);
@@ -78,7 +79,7 @@ int main(int argc, const char * argv[]){
         rec = new LBPRecognizer();
     
     // Open camera image stream
-    VideoCapture cap(am->cameraID);
+    cv::VideoCapture cap(am->cameraID);
     // If we failed, exit program
     if(!cap.isOpened()) {
         ErrorOpeningCameraMessage();
@@ -96,6 +97,8 @@ int main(int argc, const char * argv[]){
     
     // This will contain some of the last frames to update/train the recognizer later with it
     vector<Mat> framesToLearn;
+    
+    /** END: Main variables **/
     
     while (true) {
         switch (currentMode) {
@@ -134,7 +137,7 @@ int main(int argc, const char * argv[]){
                     imshow("Learn'n'Recognize", currentFrame);
                     
                     // Wait 1ms for key
-                    char key = (char)waitKey(1);
+                    char key = (char)cv::waitKey(1);
                     // Save and exit if we pressed 'q'
                     if( key == 'q' ) { SaveAndExit(rec, am->save_path); }
                     // If we pressed 'l'
@@ -252,7 +255,7 @@ int main(int argc, const char * argv[]){
                     imshow("Learn'n'Recognize", currentFrame);
                     
                     // Wait 1ms for key
-                    char key = (char)waitKey(1);
+                    char key = (char)cv::waitKey(1);
                     // Save and exit if we pressed 'q'
                     if( key == 'q' ) { SaveAndExit(rec, am->save_path); }
                     // If we pressed 's' or spacebar

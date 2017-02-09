@@ -27,6 +27,7 @@ void ExitMessage();
 void CreditsMessage();
 void Countdown(int seconds);
 void MissingArgsMessage();
+void HelpMessage();
 
 // ### OpenCV ###
 void VersionMessage(string opencv_version);
@@ -54,7 +55,7 @@ void FileNotFoundMessage(string filename, string path);
 // ### Database ###
 // Create
 void ErrorCreateDBMessage(string error);
-void SuccessCreateDBMessage();
+void SuccessCreateDBMessage(string pathToDB);
 // Access
 void ErrorAccessDBMessage(string error);
 void SuccessAccessDBMessage();
