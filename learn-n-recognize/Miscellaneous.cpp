@@ -48,6 +48,13 @@ bool IsNumber(std::string nbr){
     return *ptr == '\0' ? true : false;
 }
 
+void Countdown(int seconds){
+    for (int i = seconds; i > 0; i--) {
+        std::cout << std::to_string(i) << "… ";
+        usleep(1000000);
+    }
+}
+
 std::string colorText(std::string inputText, int colorCode){
     // 0: black
     // 1: red

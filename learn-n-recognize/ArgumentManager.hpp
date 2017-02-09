@@ -28,6 +28,9 @@ using std::string;
 
 class ArgumentManager {
     
+private:
+    bool IsMandatoryArgs(const char* argv[], int argc);
+    
 public:
     // On macOS:    absolute path to the program
     // On Linux:    name of the program

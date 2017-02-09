@@ -156,7 +156,7 @@ int main(int argc, const char * argv[]){
                     
                     if (AskYesNo("Connaissez-vous l'identifiant du sujet dans la base de donnée ? (Y/n)\n")){
                         /* We know the subject's id */
-                        string givenIDstr = AskUser("Quel est l'identifiant du sujet ?");
+                        string givenIDstr = AskUser("Quel est l'identifiant du sujet ?\n");
                         int givenID;
                         if(!IsNumber(givenIDstr))
                             givenID = -1;

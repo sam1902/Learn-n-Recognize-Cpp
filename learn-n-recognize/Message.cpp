@@ -25,13 +25,6 @@ void ExitMessage(){
     cout << colorText("Extinction imminante du programme", 1) << endl;
 }
 
-void Countdown(int seconds){
-    for (int i = seconds; i > 0; i--) {
-        cout << to_string(i) << "…" << endl;
-        usleep(1000000);
-    }
-}
-
 void MissingArgsMessage(){
     cout << colorText("[!] Arguments manquants !", 1) << endl;
 }
@@ -97,6 +90,10 @@ void EmptyFrameMessage(){
 
 void ErrorLoadingHaarMessage(){
     cerr << colorText("[!] Erreur lors du chargement de la Face Cascade.", 1) << endl;
+}
+
+void ErrorNoFaceCascadeProvided(){
+    cout << colorText("La Face Cascade est un élément essentiel au fonctionnement de ce programme, vous pouvez la téléchargée à l'adresse suivante:\n \thttps://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml Taille: 930Ko\n\nCe fichier contient des données récoltées par des équipes scientifiques après plusieurs années de recherches et est utilisé afin de détecter la présence et la position d'un visage humain orienté verticalement face à la caméra.", 3) << endl;
 }
 
 void SuccessLoadingHaarMessage(){

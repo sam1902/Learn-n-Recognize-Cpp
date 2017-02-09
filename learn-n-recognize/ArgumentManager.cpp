@@ -30,7 +30,7 @@ ArgumentManager::ArgumentManager(int argc, const char * argv[]){
     }
     
     vector<string> arguements;
-    if(argc < 7){
+    if(!this->IsMandatoryArgs(argv, argc)){
         MissingArgsMessage();
         arguements = this->AskForArgs(argv[0]);
         
@@ -50,29 +50,39 @@ ArgumentManager::ArgumentManager(int argc, const char * argv[]){
         program_path = argv[0];
         
         for (int i = 1; i < argc; i++) {
+            // Avoid 11: Segemntation fault
+            if(i+1 > argc)
+                break;
+            
             // strcmp return 0 if equal, <0 or >0 if less or more
             if(!strcmp(argv[i], "-db") || !strcmp(argv[i], "-database")){
-                database_path           =       argv[i+1];
+                database_path           =       trimmed(argv[i+1]);
                 
             }else if(!strcmp(argv[i], "-rec") || !strcmp(argv[i], "-recognizer")){
-                recognizer_path         =       argv[i+1];
+                recognizer_path         =       trimmed(argv[i+1]);
                 
             }else if(!strcmp(argv[i], "-haar")){
-                face_cascade_path       =       argv[i+1];
+                face_cascade_path       =       trimmed(argv[i+1]);
                 
             }else if(!strcmp(argv[i], "-validityThreshold") || !strcmp(argv[i], "-vt")){
-                validity_threshold      =       stoi(argv[i+1]);
+                validity_threshold      =       stoi(trimmed(argv[i+1]));
                 
             }else if(!strcmp(argv[i], "-cam") || !strcmp(argv[i], "-cameraID")){
-                cameraID                =       stoi(argv[i+1]);
+                cameraID                =       stoi(trimmed(argv[i+1]));
                 
             }else if(!strcmp(argv[i], "-scale")){
-                video_scaling_factor    =       stoi(argv[i+1]);
+                video_scaling_factor    =       stoi(trimmed(argv[i+1]));
                 
             }else if(!strcmp(argv[i], "-save") || !strcmp(argv[i], "-s")){
-                save_path               =       argv[i+1];
+                save_path               =       trimmed(argv[i+1]);
             }
         }
+    }
+    
+    if(face_cascade_path.size() < 5){
+        ErrorNoFaceCascadeProvided();
+        ExitMessage();
+        exit(EXIT_SUCCESS);
     }
 }
 
@@ -92,7 +102,7 @@ vector<string> ArgumentManager::AskForArgs(const char* argv_zero){
     argv[3] = trimmed(AskUser("\tChemin vers la Face Cascade ?\n"));
     if(argv[3].size()<5){
         // Say goodbye
-        cout << colorText("La Face Cascade est un élément essentiel au fonctionnement de ce programme, vous pouvez la téléchargée à l'adresse suivante:\n \thttps://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml Taille: 930Ko\n\nCe fichier contient des données récoltées par des équipes scientifiques après plusieurs années de recherches et est utilisé afin de détecter la présence et la position d'un visage humain orienté verticalement face à la caméra.", 3) << endl;
+        ErrorNoFaceCascadeProvided();
         ExitMessage();
         exit(EXIT_SUCCESS);
     }
@@ -132,3 +142,13 @@ vector<string> ArgumentManager::AskForArgs(const char* argv_zero){
 //    }
 }
 
+bool ArgumentManager::IsMandatoryArgs(const char* argv[], int argc){
+    bool isHaar = false, isSavePath = false;
+    for (int i = 0; i < argc; i++) {
+        if(!strcmp(argv[i], "-haar"))
+            isHaar = true;
+        else if(!strcmp(argv[i], "-save") || !strcmp(argv[i], "-s"))
+            isSavePath = true;
+    }
+    return isHaar && isSavePath;
+}

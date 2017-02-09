@@ -15,12 +15,14 @@
 #include <functional>
 #include <cctype>
 #include <ctime>
+#include <unistd.h>
 #include <locale>
 
 std::string random_string(size_t length);
 std::string timestamp(std::string format);
 
 bool IsNumber(std::string nbr);
+void Countdown(int seconds);
 
 // 0: black
 // 1: red

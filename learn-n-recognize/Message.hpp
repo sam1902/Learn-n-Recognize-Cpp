@@ -11,7 +11,6 @@
 
 #include <iostream>
 #include <cstdlib>
-#include <unistd.h>
 #include "Miscellaneous.hpp"
 
 using std::string;
@@ -25,7 +24,6 @@ using std::to_string;
 void ClearMessage();
 void ExitMessage();
 void CreditsMessage();
-void Countdown(int seconds);
 void MissingArgsMessage();
 void HelpMessage();
 
@@ -34,6 +32,7 @@ void VersionMessage(string opencv_version);
 // Haar
 void ErrorLoadingHaarMessage();
 void SuccessLoadingHaarMessage();
+void ErrorNoFaceCascadeProvided();
 // LBPR
 void ErrorLoadingLBPRMessage();
 void SuccessLoadingLBPRMessage();
