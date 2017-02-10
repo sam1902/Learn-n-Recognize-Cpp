@@ -10,6 +10,7 @@
 		7D1C15871E4A317A001F6EFF /* Miscellaneous.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D1C15851E4A317A001F6EFF /* Miscellaneous.cpp */; };
 		7D4C2B2D1E0BB3BB0026000F /* Message.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D4C2B2B1E0BB3BB0026000F /* Message.cpp */; };
 		7D4C2B321E0BE31B0026000F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D4C2B301E0BE31B0026000F /* Database.cpp */; };
+		7D4C70D51E4D165B00D20F99 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D4C70D31E4D165B00D20F99 /* Network.cpp */; };
 		7D5E41C31DD6608A00D8805A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E41C21DD6608A00D8805A /* main.cpp */; };
 		7D70EF541E10436E00842923 /* HaarCascade.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D70EF521E10436E00842923 /* HaarCascade.cpp */; };
 		7D70EF571E1064EC00842923 /* LBPRecognizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D70EF551E1064EC00842923 /* LBPRecognizer.cpp */; };
@@ -36,6 +37,8 @@
 		7D4C2B2C1E0BB3BB0026000F /* Message.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = Message.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		7D4C2B301E0BE31B0026000F /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
 		7D4C2B311E0BE31B0026000F /* Database.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Database.hpp; sourceTree = "<group>"; };
+		7D4C70D31E4D165B00D20F99 /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Network.cpp; path = ../Network.cpp; sourceTree = "<group>"; };
+		7D4C70D41E4D165B00D20F99 /* Network.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Network.hpp; path = ../Network.hpp; sourceTree = "<group>"; };
 		7D5E41BF1DD6608A00D8805A /* learn-n-recognize */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "learn-n-recognize"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D5E41C21DD6608A00D8805A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = main.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		7D70EF521E10436E00842923 /* HaarCascade.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HaarCascade.cpp; sourceTree = "<group>"; };
@@ -101,6 +104,8 @@
 				7D70EF561E1064EC00842923 /* LBPRecognizer.hpp */,
 				7D1C15851E4A317A001F6EFF /* Miscellaneous.cpp */,
 				7D1C15861E4A317A001F6EFF /* Miscellaneous.hpp */,
+				7D4C70D31E4D165B00D20F99 /* Network.cpp */,
+				7D4C70D41E4D165B00D20F99 /* Network.hpp */,
 			);
 			path = "learn-n-recognize";
 			sourceTree = "<group>";
@@ -163,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D5E41C31DD6608A00D8805A /* main.cpp in Sources */,
+				7D4C70D51E4D165B00D20F99 /* Network.cpp in Sources */,
 				7D8F8DFA1E17E88200374C5F /* AskUser.cpp in Sources */,
 				7D4C2B321E0BE31B0026000F /* Database.cpp in Sources */,
 				7D4C2B2D1E0BB3BB0026000F /* Message.cpp in Sources */,
@@ -283,6 +289,7 @@
 					"-lopencv_highgui",
 					"-lopencv_imgproc",
 					"-lsqlite3",
+					"-lcurl",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "";
@@ -305,6 +312,7 @@
 					"-lopencv_highgui",
 					"-lopencv_imgproc",
 					"-lsqlite3",
+					"-lcurl",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VERSIONING_SYSTEM = "";

@@ -50,7 +50,7 @@ bool IsNumber(std::string nbr){
 
 void Countdown(int seconds){
     for (int i = seconds; i > 0; i--) {
-        std::cout << std::to_string(i) << "… ";
+        std::cout << std::to_string(i) << "… " << std::endl;
         usleep(1000000);
     }
 }

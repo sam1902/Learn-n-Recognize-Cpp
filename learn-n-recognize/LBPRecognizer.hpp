@@ -39,8 +39,7 @@ using cv::face::createLBPHFaceRecognizer;
 
 class LBPRecognizer {
 private:
-    bool isFaceRecognizerEmpty = true;
-    bool hasBeenEdited = false;
+    bool isFaceRecognizerEmpty = true, hasBeenImproved = false;
     Ptr<FaceRecognizer> model;
     Mat toGrey(Mat src);
     vector<Mat> toGrey(vector<Mat> src);

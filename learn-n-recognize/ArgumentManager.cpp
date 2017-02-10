@@ -16,11 +16,7 @@ ArgumentManager::ArgumentManager(int argc, const char * argv[]){
     
     
     // Check if the user requested to see the help message
-    if(argc == 1){
-        HelpMessage();
-        ExitMessage();
-        exit(EXIT_SUCCESS);
-    }
+
     for (int i = 1; i < argc; i++) {
         if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "-help") || !strcmp(argv[i], "-aide")){
             HelpMessage();
@@ -30,7 +26,7 @@ ArgumentManager::ArgumentManager(int argc, const char * argv[]){
     }
     
     vector<string> arguements;
-    if(!this->IsMandatoryArgs(argv, argc)){
+    if(this->isGUIFlag(argv, argc)){
         MissingArgsMessage();
         arguements = this->AskForArgs(argv[0]);
         
@@ -77,12 +73,20 @@ ArgumentManager::ArgumentManager(int argc, const char * argv[]){
                 save_path               =       trimmed(argv[i+1]);
             }
         }
+        
     }
     
     if(face_cascade_path.size() < 5){
         ErrorNoFaceCascadeProvided();
-        ExitMessage();
-        exit(EXIT_SUCCESS);
+        if(AskYesNo("Souhaitez-vous télécharger la Face Cascade ?\n")){
+            if(!this->downloadHaarFaceCascade()){
+                ExitMessage();
+                exit(EXIT_SUCCESS);
+            }
+        }else{
+            ExitMessage();
+            exit(EXIT_SUCCESS);
+        }
     }
 }
 
@@ -99,12 +103,21 @@ vector<string> ArgumentManager::AskForArgs(const char* argv_zero){
     if(argv[2] == "n")
         argv[2] = "";
     
+    argv[7] = trimmed(AskUser("\tVeuillez fournir l'adresse d'un dossier\n\tafin d'y sauvegarder les nouveaux fichiers:\n"));
+    
     argv[3] = trimmed(AskUser("\tChemin vers la Face Cascade ?\n"));
     if(argv[3].size()<5){
         // Say goodbye
         ErrorNoFaceCascadeProvided();
-        ExitMessage();
-        exit(EXIT_SUCCESS);
+        if(AskYesNo("Souhaitez-vous télécharger la Face Cascade ?\n")){
+            if(!this->downloadHaarFaceCascade()){
+                ExitMessage();
+                exit(EXIT_SUCCESS);
+            }
+        }else{
+            ExitMessage();
+            exit(EXIT_SUCCESS);
+        }
     }
     
     do {
@@ -132,8 +145,6 @@ vector<string> ArgumentManager::AskForArgs(const char* argv_zero){
         }
     } while (!IsNumber(argv[6]));
     
-    argv[7] = trimmed(AskUser("\tVeuillez fournir l'adresse d'un dossier\n\tafin d'y sauvegarder les nouveaux fichiers:\n"));
-    
     return argv;
     // vector<string> to char** []
     // BE CAREFUL ! SEGMENTATION FAULT 11 IS WATCHING YOU !
@@ -142,13 +153,27 @@ vector<string> ArgumentManager::AskForArgs(const char* argv_zero){
 //    }
 }
 
-bool ArgumentManager::IsMandatoryArgs(const char* argv[], int argc){
-    bool isHaar = false, isSavePath = false;
-    for (int i = 0; i < argc; i++) {
-        if(!strcmp(argv[i], "-haar"))
-            isHaar = true;
-        else if(!strcmp(argv[i], "-save") || !strcmp(argv[i], "-s"))
-            isSavePath = true;
+bool ArgumentManager::downloadHaarFaceCascade(){
+    string url = "http://loriscode.com/docs/haarcascade_frontalface_default.xml";
+    
+    string filename = "haarcascade_frontalface_default.xml";
+    string path = this->save_path;
+    if(path.size() > 0){
+        // If our path doesn't end with / we need to add one:
+        if(path[path.size()-1] != '/')
+            filename = "/" + filename;
     }
-    return isHaar && isSavePath;
+    if(downloadFile(url, path + filename)){
+        this->face_cascade_path = path + filename;
+        return true;
+    }else
+        return false;
+}
+
+bool ArgumentManager::isGUIFlag(const char* argv[], int argc){
+    for (int i = 1; i < argc; i++) {
+        if(!strcmp(argv[i], "-gui") || !strcmp(argv[i], "-GUI") || !strcmp(argv[i], "-interface")|| !strcmp(argv[i], "-i"))
+            return true;
+    }
+    return false;
 }

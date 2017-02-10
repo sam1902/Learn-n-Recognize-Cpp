@@ -39,6 +39,7 @@ void SuccessLoadingLBPRMessage();
 void WarningInitEmptyLBPRMessage();
 void ErrorUpdateNotInitializedLBPR();
 void SuccessSavingLBPRMessage(string pathToLBPR);
+void NotBeenImprovedSavingLBPR();
 // Camera
 void EmptyFrameMessage();
 void ErrorOpeningCameraMessage();
@@ -67,5 +68,8 @@ void ErrorInsertSubjectDBMessage(string error);
 void SuccessInsertSubjectMessage(string subjectName, string subjectID);
 void ErrorExecuteQueryDBMessage(string query, string error);
 
+// ### cURL ###
+void SuccessDownloadingFile(string url, string outfilename, string status);
+void ErrorDownloadingFile(string url, string status);
 
 #endif /* Message_hpp */

@@ -33,11 +33,18 @@ bool LBPRecognizer::load(string path){
 }
 
 void LBPRecognizer::save(string path){
+    if(!this->hasBeenImproved){
+        NotBeenImprovedSavingLBPR();
+        return;
+    }
+    
     string prefix = "LBPH_recognizer_";
     
-    // If our path doesn't end with / we need to add one:
-    if(path[path.size()-1] != '/')
-        prefix = "/" + prefix;
+    if(path.size() > 0){
+        // If our path doesn't end with / we need to add one:
+        if(path[path.size()-1] != '/')
+            prefix = "/" + prefix;
+    }
     
     string fullpath = path + prefix + timestamp("%d-%m-%Y_%H-%M-%S_%Z") + ".xml";
     this->model->save(fullpath);
@@ -47,13 +54,14 @@ void LBPRecognizer::save(string path){
 void LBPRecognizer::train(vector<Mat> src, vector<int> labels){
     this->model->train(this->toGrey(src), labels);
     this->isFaceRecognizerEmpty = false;
-    this->hasBeenEdited         = true;
+    this->hasBeenImproved       = true;
 }
 
 void LBPRecognizer::update(vector<Mat> src, vector<int> labels){
     if(!this->isEmpty()){
         this->model->update(this->toGrey(src), labels);
-        this->hasBeenEdited = true;
+        this->isFaceRecognizerEmpty = false;
+        this->hasBeenImproved       = true;
     }else{
         ErrorUpdateNotInitializedLBPR();
         this->train(src, labels);

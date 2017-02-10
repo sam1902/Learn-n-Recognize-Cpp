@@ -14,6 +14,7 @@
 #include <vector>
 #include "Message.hpp"
 #include "AskUser.hpp"
+#include "Network.hpp"
 #include "Miscellaneous.hpp"
 
 using std::stoi;
@@ -27,10 +28,8 @@ using std::endl;
 using std::string;
 
 class ArgumentManager {
-    
 private:
-    bool IsMandatoryArgs(const char* argv[], int argc);
-    
+    bool isGUIFlag(const char* argv[], int argc);
 public:
     // On macOS:    absolute path to the program
     // On Linux:    name of the program
@@ -41,7 +40,7 @@ public:
     // Path to where the LBP recognizer archive is
     string recognizer_path;
     // Path to save newly created files
-    string save_path;
+    string save_path = "";
     // Path to haar cascade XML file
     string face_cascade_path;
     
@@ -55,6 +54,8 @@ public:
     float video_scaling_factor = 1;
     
     ArgumentManager(int argc, const char * argv[]);
+    
+    bool downloadHaarFaceCascade();
     
     vector<string> AskForArgs(const char* argv_zero);
 };

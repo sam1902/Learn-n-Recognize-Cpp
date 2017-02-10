@@ -32,6 +32,7 @@ void Countdown(int seconds);
 // 5: magenta
 // 6: cyan
 // 7: white
+enum ColorCode {BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE};
 std::string colorText(std::string inputText, int colorCode);
 
 // trim from start

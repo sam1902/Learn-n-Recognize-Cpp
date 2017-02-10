@@ -21,10 +21,11 @@ Database::~Database(){
 bool Database::create(string path){
     string prefix = "lrn_db_";
     
-    // If our path doesn't end with / we need to add one:
-    if(path[path.size()-1] != '/')
-        prefix = "/" + prefix;
-    
+    if(path.size() > 0){
+        // If our path doesn't end with / we need to add one:
+        if(path[path.size()-1] != '/')
+            prefix = "/" + prefix;
+    }
     return this->init(path + prefix + timestamp("%d-%m-%Y_%H-%M-%S_%Z") +".sqlite") ? true : false;
 }
 
