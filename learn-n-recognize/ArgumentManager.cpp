@@ -18,7 +18,7 @@ ArgumentManager::ArgumentManager(int argc, const char * argv[]){
     // Check if the user requested to see the help message
 
     for (int i = 1; i < argc; i++) {
-        if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "-help") || !strcmp(argv[i], "-aide")){
+        if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help") || !strcmp(argv[i], "--aide")){
             HelpMessage();
             ExitMessage();
             exit(EXIT_SUCCESS);
@@ -51,25 +51,25 @@ ArgumentManager::ArgumentManager(int argc, const char * argv[]){
                 break;
             
             // strcmp return 0 if equal, <0 or >0 if less or more
-            if(!strcmp(argv[i], "-db") || !strcmp(argv[i], "-database")){
+            if(!strcmp(argv[i], "-db") || !strcmp(argv[i], "--database")){
                 database_path           =       trimmed(argv[i+1]);
                 
-            }else if(!strcmp(argv[i], "-rec") || !strcmp(argv[i], "-recognizer")){
+            }else if(!strcmp(argv[i], "-rec") || !strcmp(argv[i], "--recognizer")){
                 recognizer_path         =       trimmed(argv[i+1]);
                 
             }else if(!strcmp(argv[i], "-haar")){
                 face_cascade_path       =       trimmed(argv[i+1]);
                 
-            }else if(!strcmp(argv[i], "-validityThreshold") || !strcmp(argv[i], "-vt")){
+            }else if(!strcmp(argv[i], "--validityThreshold") || !strcmp(argv[i], "-vt")){
                 validity_threshold      =       stoi(trimmed(argv[i+1]));
                 
-            }else if(!strcmp(argv[i], "-cam") || !strcmp(argv[i], "-cameraID")){
+            }else if(!strcmp(argv[i], "-cam") || !strcmp(argv[i], "--cameraID")){
                 cameraID                =       stoi(trimmed(argv[i+1]));
                 
             }else if(!strcmp(argv[i], "-scale")){
                 video_scaling_factor    =       stoi(trimmed(argv[i+1]));
                 
-            }else if(!strcmp(argv[i], "-save") || !strcmp(argv[i], "-s")){
+            }else if(!strcmp(argv[i], "--save") || !strcmp(argv[i], "-s")){
                 save_path               =       trimmed(argv[i+1]);
             }
         }
@@ -172,7 +172,7 @@ bool ArgumentManager::downloadHaarFaceCascade(){
 
 bool ArgumentManager::isGUIFlag(const char* argv[], int argc){
     for (int i = 1; i < argc; i++) {
-        if(!strcmp(argv[i], "-gui") || !strcmp(argv[i], "-GUI") || !strcmp(argv[i], "-interface")|| !strcmp(argv[i], "-i"))
+        if(!strcmp(argv[i], "--gui") || !strcmp(argv[i], "--GUI") || !strcmp(argv[i], "--interface")|| !strcmp(argv[i], "-i"))
             return true;
     }
     return false;

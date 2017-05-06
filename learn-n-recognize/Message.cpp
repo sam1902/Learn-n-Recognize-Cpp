@@ -38,17 +38,17 @@ void HelpMessage(){
     << "Liste des options :"
     << endl
     << endl
-    << "-h , -help, -aide"
+    << "-h , --help, --aide"
     << endl
     <<      "\tAffiche ce message d'aide."
     << endl
     << endl
-    << "-i , -gui, -interface, -GUI"
+    << "-i , --gui, --interface, --GUI"
     << endl
     <<      "\tAffiche une série de dialogue permettant le choix de chacun des arguments"
     << endl
     << endl
-    << "-s, -save /chemin/vers/dossier"
+    << "-s, --save /chemin/vers/dossier"
     << endl
     << "\tChemin où sauvegarder les fichiers tel que la base de donnée (si non précédement fournis) ou le nouveau reconaisseur LBP (répertoire de l'executable par défaut)"
     << endl
@@ -58,22 +58,22 @@ void HelpMessage(){
     <<      "\tChemin vers la Face Cascade (disponible à l'adresse : https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml) (téléchargement automatique par défaut)"
     << endl
     << endl
-    << "-db , -database /chemin/vers/fichier/database.sqlite"
+    << "-db , --database /chemin/vers/fichier/database.sqlite"
     << endl
     <<      "\tChemin vers la base de donnée (création automatique par défaut)"
     << endl
     << endl
-    << "-rec, -recognizer /chemin/vers/fichier/LBPH.xml"
+    << "-rec, --recognizer /chemin/vers/fichier/LBPH.xml"
     << endl
     <<      "\tChemin vers le reconaisseur LBP (création automatique par défaut)"
     << endl
     << endl
-    << "-vt, -validityThreshold 65"
+    << "-vt, --validityThreshold 65"
     << endl
     <<      "\tSeuil de validité au delà duquel une détection est considéré comme trop hasardeuse (65 par défaut, en %) "
     << endl
     << endl
-    << "-cam, -cameraID 0"
+    << "-cam, --cameraID 0"
     << endl
     <<      "\tIdentifiant de la caméra à utilisé (0 par défaut) "
     << endl
