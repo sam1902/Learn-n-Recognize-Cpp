@@ -44,6 +44,8 @@ int main(int argc, const char * argv[]){
     // Display credits
     CreditsMessage();
     
+    std::cout << "HELLO WORLD FROM NEW MAC " << std::endl;
+    
     // Arguments handler, check if every args are provided
     ArgumentManager* am = new ArgumentManager(argc, argv);
     

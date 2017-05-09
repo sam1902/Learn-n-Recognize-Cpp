@@ -154,8 +154,6 @@ vector<string> ArgumentManager::AskForArgs(const char* argv_zero){
 }
 
 bool ArgumentManager::downloadHaarFaceCascade(){
-    string url = "http://loriscode.com/docs/haarcascade_frontalface_default.xml";
-    
     string filename = "haarcascade_frontalface_default.xml";
     string path = this->save_path;
     if(path.size() > 0){
@@ -163,7 +161,7 @@ bool ArgumentManager::downloadHaarFaceCascade(){
         if(path[path.size()-1] != '/')
             filename = "/" + filename;
     }
-    if(downloadFile(url, path + filename)){
+    if(downloadFile(URL_HAAR_CASCADE, path + filename)){
         this->face_cascade_path = path + filename;
         return true;
     }else
